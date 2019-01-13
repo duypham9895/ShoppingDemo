@@ -1,6 +1,5 @@
 package com.shopping.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +33,6 @@ public class ProductController {
 	
 	@GetMapping("/new")
 	public ServiceResult insert(ProductModel model) {
-		List<String> image = new ArrayList<>();
-		image.add("image 3");
-		model.setId("pd3");
-		model.setName("name3");
-		model.setDescription("desciption 3");
-		model.setImage(image);
-		model.setPrice(3333);
 		return productSerive.insert(model);
 	}
 }
