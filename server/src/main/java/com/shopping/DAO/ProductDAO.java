@@ -29,6 +29,6 @@ public class ProductDAO {
 	public Product find(Product product) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("id").is(product.getId()));
-		return template.findOne(query, Product.class);
+		return template.findOne(query, Product.class,COLLECTION_NAME);
 	}
 }

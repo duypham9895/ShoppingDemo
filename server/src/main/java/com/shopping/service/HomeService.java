@@ -13,7 +13,7 @@ import com.shopping.util.ServiceResult;
 import com.shopping.util.ServiceStatus;
 
 @Service
-public class ProductService {
+public class HomeService {
 
 	@Autowired
 	ProductDAO productDAO;

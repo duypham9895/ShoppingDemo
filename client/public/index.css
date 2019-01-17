@@ -2,3 +2,28 @@
   position: fixed;
   visibility: hidden;
 }
+
+.form-control{
+	position: relative;
+	width: 100%;
+
+}
+
+.form-control > label{
+	position: absolute;
+	transition: all .2s;
+
+}
+
+.form-control > input:valid + label{
+	/*border: 1px solid black;*/
+	left: 0px;
+	top: -26px;
+}
+
+.form-control > input:invalid + label {
+	/*border: 1px dashed black;*/
+	left: 7px;
+	top: 7px;
+	/*color: red;*/
+}

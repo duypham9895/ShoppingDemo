@@ -1,39 +1,34 @@
 import React, { Component } from 'react';
-import ShoppingPage from './pages/ShoppingPage.jsx';
-import AddProduct from './components/AddProduct.jsx';
 import {Route} from 'react-router';
+import { connect } from 'react-redux';
+
+// import ShoppingPage from './pages/ShoppingPage.jsx';
+// import AuthorizePage from './pages/AuthorizePage.jsx';
+import { changeData, changeRole } from './actions/UserAction.jsx';
+import UserManagingPage from './pages/UserManagingPage.jsx';
+
+
 
 class App extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      user:{
-        userData: {
-          username: '',
-          password: '',
-        },
-        isLogin: false,
-      }
-    }
-  }
-
-  
-
+// <div>
+//   <Route path='/' exact render={ (props) => <ShoppingPage auth={state.auth} {...props}/> }/>
+//   <Route path='/login' exact render = { (props) => <AuthorizePage {...props} />} />
+// </div>
   render() {
-    
+    console.log(this.props);
     return (
-      <div>
-        <div> <input /> </div>
-        <div uk-grid=''>
-          <div className='uk-width-1-5'>Sidebar</div>
-          <div className='uk-width-3-5'>
-            <Route path='/' exact component={ShoppingPage}/>
-          </div>
-          <div className='uk-width-1-5'>UserInfo</div>
+        <div>
+          <UserManagingPage />
         </div>
-      </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (store) => {
+  console.log(store.User.list);
+  return {
+    list: store.User.list,
+  }
+}
+
+export default connect(mapStateToProps)(App);
