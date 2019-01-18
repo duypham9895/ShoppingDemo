@@ -1,14 +1,12 @@
 package com.shopping.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shopping.entity.Product;
+import com.shopping.model.GeneralModel;
 import com.shopping.model.ProductModel;
 import com.shopping.service.GeneralService;
 import com.shopping.service.HomeService;
@@ -26,9 +24,9 @@ public class ProductController {
 	GeneralService generalService;
 
 	@GetMapping("/all")
-	public List<Product> getList() {
+	public GeneralModel getList() {
 		System.out.println("list product");
-		return generalService.getGeneralModel().getProduct();
+		return generalService.getGeneralModel();
 	}
 
 	@GetMapping("/new")

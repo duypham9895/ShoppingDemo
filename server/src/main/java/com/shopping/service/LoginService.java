@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.shopping.DAO.UserDAO;
 import com.shopping.entity.User;
+import com.shopping.model.LoginUserModel;
 import com.shopping.model.UserModel;
 import com.shopping.util.Message;
 import com.shopping.util.ServiceResult;
@@ -20,7 +21,7 @@ public class LoginService {
 
 	public ServiceResult insert(UserModel model) {
 		ServiceResult result = new ServiceResult();
-		User user = userDAO.find(extract(model));
+		User user = userDAO.find(model.getUsername());
 		if (user != null) {
 			result.setMessage(Message.DATA_EXIST);
 			result.setStatus(ServiceStatus.FAIL);
@@ -56,7 +57,7 @@ public class LoginService {
 	public ServiceResult find(UserModel model) {
 		
 		ServiceResult result = new ServiceResult();
-		User user = userDAO.find(extract(model));
+		User user = userDAO.find(model.getUsername());
 		if (user != null) {
 			result.setMessage(Message.DATA_EXIST);
 			result.setStatus(ServiceStatus.FAIL);
@@ -70,24 +71,34 @@ public class LoginService {
 		return result;
 	}
 	
-	public ServiceResult getDataUserOnClient(UserModel model) {
+	public ServiceResult getDataUserOnClient(LoginUserModel model) {
 		ServiceResult result = new ServiceResult();
-		User user = userDAO.find(extract(model));
+		System.out.println(model.getUsername());
+		System.out.println(model.getPassword());
+		User user = userDAO.find(model.getUsername());
+		
+		
 		if(user == null) {
+			System.out.println("not found");
 			result.setMessage(Message.DATA_NOT_EXSIT);
 			result.setStatus(ServiceStatus.FAIL);
 			result.setObject(null);
+			
 			return result;
 		}
+		
 		if(model.getPassword().equals(user.getPassword())) {
+			System.out.println("ok");
 			result.setMessage(Message.DATA_EXIST);
 			result.setStatus(ServiceStatus.SUCCESS);
-			result.setObject(extract(model));
+			result.setObject(user);
 			return result;
 		}
+		System.out.println("invalid password");
 		result.setMessage(Message.INFORMATION_INCORRECT);
 		result.setStatus(ServiceStatus.FAIL);
 		result.setObject(null);
+		
 		return result;
 		
 	}

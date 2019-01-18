@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {Route} from 'react-router';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
 
-// import ShoppingPage from './pages/ShoppingPage.jsx';
-// import AuthorizePage from './pages/AuthorizePage.jsx';
+import ShoppingPage from './pages/ShoppingPage.jsx';
+import AuthorizePage from './pages/AuthorizePage.jsx';
 import { changeData, changeRole } from './actions/UserAction.jsx';
 import UserManagingPage from './pages/UserManagingPage.jsx';
 
@@ -15,20 +16,18 @@ class App extends Component {
 //   <Route path='/login' exact render = { (props) => <AuthorizePage {...props} />} />
 // </div>
   render() {
-    console.log(this.props);
     return (
         <div>
-          <UserManagingPage />
+          <Route path='/shopping' render={(props) => <ShoppingPage {...props} location={{pathname: '/shopping'}} />} />
+          <Route path='/login' render= {(props) => <AuthorizePage {...props} location={{pathname: '/login'}} />}  />
         </div>
     );
   }
 }
 
 const mapStateToProps = (store) => {
-  console.log(store.User.list);
   return {
-    list: store.User.list,
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

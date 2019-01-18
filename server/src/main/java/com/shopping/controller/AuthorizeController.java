@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopping.entity.User;
+import com.shopping.model.LoginUserModel;
 import com.shopping.model.UserModel;
 import com.shopping.service.LoginService;
 import com.shopping.service.MailService;
@@ -19,11 +20,11 @@ import com.shopping.util.ServiceResult;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("http://localhost:3000")
-public class LoginController {
+public class AuthorizeController {
 
 	@Autowired
 	LoginService loginService;
-	
+
 	@Autowired
 	MailService mailService;
 
@@ -36,22 +37,19 @@ public class LoginController {
 	public ServiceResult insert(UserModel model) {
 		model.setUsername("admin");
 		model.setPassword("admin");
+		model.setEmail("duypham9895@gmail.com");
+		model.setPhone("0963769049");
 		return loginService.insert(model);
 	}
 
 	@PostMapping("/login")
-	public ServiceResult login(@RequestBody User user) {
-		System.out.println(user.getUsername());
-		UserModel model = new UserModel();
-		model.setUsername(user.getUsername());
-		model.setPassword(user.getPassword());
+	public ServiceResult login(@RequestBody LoginUserModel model) {
 		return loginService.getDataUserOnClient(model);
 	}
 	
-	@GetMapping("/mail")
-	public void sendMail() {
-		System.out.println("mail");
-		mailService.sendMail("duypham9895@gmail.com", "abc", "hello");
+	@GetMapping("/forgot/password")
+	public void forgotPassword() {
+		mailService.sendMailWhenForgotPassword("admin");
 	}
 
 }

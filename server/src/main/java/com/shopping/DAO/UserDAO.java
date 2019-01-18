@@ -26,10 +26,15 @@ public class UserDAO {
 		return template.findAll(User.class,COLLECTION_NAME);
 	}
 	
-	public User find(User user) {
+	public User find(String username) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("username").is(user.getUsername()));
+		query.addCriteria(Criteria.where("username").is(username));
 		return template.findOne(query, User.class, COLLECTION_NAME);
 	}
+	
+	public User update( User user) {
+		return template.save(user,COLLECTION_NAME);
+	}
+	
 
 }
