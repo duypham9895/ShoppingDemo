@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 class ShoppingPage extends React.Component {
 	render(){
@@ -35,4 +34,4 @@ const mapStateToProps = (store) => {
 	}
 }
 
-export default withRouter(connect(mapStateToProps)(ShoppingPage));
+export default connect(mapStateToProps)(ShoppingPage);

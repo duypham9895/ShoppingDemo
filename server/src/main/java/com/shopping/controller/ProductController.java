@@ -25,7 +25,6 @@ public class ProductController {
 
 	@GetMapping("/all")
 	public GeneralModel getList() {
-		System.out.println("list product");
 		return generalService.getGeneralModel();
 	}
 

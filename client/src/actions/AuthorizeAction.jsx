@@ -38,11 +38,3 @@ export function requestDataLogin(data, history) {
 		)
 	}
 }
-
-// export function fetchUserRequest(){
-// 	return function (dispatch){
-// 		dispatch:({
-// 			type: 'FETCH_DATA_USER',
-// 		})
-// 	}
-// }

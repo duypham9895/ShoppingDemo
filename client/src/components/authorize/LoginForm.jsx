@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { changeData, requestDataLogin } from '../../actions/AuthorizeAction.jsx';
 
@@ -35,7 +36,7 @@ class LoginForm extends React.Component {
 						</div>
 						<div className='uk-grid-collapse' uk-grid='' >
 							<div className='uk-width-4-5'>
-								<a>Forget password</a>
+								<a><Link to='/forgot'>Forget password</Link></a>
 								<br/>
 								<a>Create new account</a>
 							</div>

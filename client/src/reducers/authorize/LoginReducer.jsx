@@ -5,13 +5,12 @@ const initialState = {
 			username: '',
 			password: '',
 		},
+		forgot:{
+			email: '',
+			phone: '',
+		}
 	}
 };
-// export function fetchDataUser(){
-// 	return dispatch => {
-
-// 	}
-// }
 
 export default function reducer(state = initialState, action) {
 	switch(action.type){

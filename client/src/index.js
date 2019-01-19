@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App.jsx';
 import { Provider } from 'react-redux';
-import Store from './store.js';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
+
+import App from './App.jsx';
+import Store from './store.js';
 
 ReactDOM.render(
 	<BrowserRouter>
