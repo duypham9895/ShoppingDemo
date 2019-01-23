@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopping.entity.User;
 import com.shopping.model.LoginUserModel;
 import com.shopping.model.UserModel;
 import com.shopping.service.LoginService;
-import com.shopping.service.MailService;
+import com.shopping.service.UserService;
 import com.shopping.util.ServiceResult;
 
 @RestController
@@ -26,7 +27,7 @@ public class AuthorizeController {
 	LoginService loginService;
 
 	@Autowired
-	MailService mailService;
+	UserService userService;
 
 	@GetMapping("/all")
 	public List<User> getList() {
@@ -46,10 +47,12 @@ public class AuthorizeController {
 	public ServiceResult login(@RequestBody LoginUserModel model) {
 		return loginService.getDataUserOnClient(model);
 	}
-	
-	@GetMapping("/forgot/password")
-	public void forgotPassword() {
-		mailService.sendMailWhenForgotPassword("admin");
+
+	@GetMapping("/forgot")
+	public ServiceResult forgotPassword(@RequestParam(name="username") String username) {
+		System.out.println(username);
+		return userService.sendForgotPasswordMail(username);
 	}
+	
 
 }

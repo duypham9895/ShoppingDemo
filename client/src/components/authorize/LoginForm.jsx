@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, } from 'react-router-dom';
 
-import { changeData, requestDataLogin } from '../../actions/AuthorizeAction.jsx';
+import { changeData, requestDataLogin } from '../../actions/LoginAction.jsx';
+
 
 class LoginForm extends React.Component {
 
@@ -16,12 +17,21 @@ class LoginForm extends React.Component {
 		this.props.dispatch(requestDataLogin(this.props.form.data, this.props.history));
 	}
 
+	forgot(){
+		this.props.history.push('/user/forgot');
+	}
+
+	create(){
+		this.props.history.push('/user/create');
+	}
+
 	render(){
 		return(
-			<div>
+			<div className='uk-padding uk-position-center boxshadow' style={{width: '50%'}}>
+				<h2 className='uk-text-center uk-text-bold uk-text-primary'>Sign In</h2>
 				<nav className='uk-padding-small'></nav>
-				<div>
-					<div className='uk-width-1-2'>
+				<div >
+					<div className='uk-width-1-1'>
 						<div className='uk-margin form-control'>
 							<input onChange={this.inputChange.bind(this)} name='username' id='username'
 							value={ this.props.form.data.username }
@@ -36,9 +46,9 @@ class LoginForm extends React.Component {
 						</div>
 						<div className='uk-grid-collapse' uk-grid='' >
 							<div className='uk-width-4-5'>
-								<a><Link to='/forgot'>Forget password</Link></a>
+								<a onClick={this.forgot.bind(this)}>Forget password</a>
 								<br/>
-								<a>Create new account</a>
+								<a onClick={this.create.bind(this)}>Create new account</a>
 							</div>
 							<div className='uk-width-1-5'>
 								<button onClick={this.login.bind(this)} className='uk-button uk-button-primary'>Login</button>
@@ -57,4 +67,4 @@ const mapStateToProps = (store) => {
 	}
 }
 
-export default connect(mapStateToProps)(LoginForm);
+export default withRouter(connect(mapStateToProps)(LoginForm));

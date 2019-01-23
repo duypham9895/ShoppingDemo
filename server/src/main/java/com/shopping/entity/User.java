@@ -2,10 +2,14 @@ package com.shopping.entity;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("users")
 public class User {
+	@Id
+	@Field("username")
 	private String username;
 	private String password;
 	private String fullname;
