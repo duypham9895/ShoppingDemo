@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter, } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { changeData, requestDataLogin } from '../../actions/LoginAction.jsx';
 
@@ -46,9 +46,9 @@ class LoginForm extends React.Component {
 						</div>
 						<div className='uk-grid-collapse' uk-grid='' >
 							<div className='uk-width-4-5'>
-								<a onClick={this.forgot.bind(this)}>Forget password</a>
+								<p onClick={this.forgot.bind(this)}>Forget password</p>
 								<br/>
-								<a onClick={this.create.bind(this)}>Create new account</a>
+								<p onClick={this.create.bind(this)}>Create new account</p>
 							</div>
 							<div className='uk-width-1-5'>
 								<button onClick={this.login.bind(this)} className='uk-button uk-button-primary'>Login</button>

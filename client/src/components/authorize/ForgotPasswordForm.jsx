@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 
 import { changeInput, forgotPassword, submitCode,
-	updateModel, updatePassword, changeCode, resetAll,
+	updatePassword, changeCode, resetAll,
 	setMessage } from '../../actions/ForgotPasswordAction.jsx';
 
 class ForgotPasswordForm extends React.Component{
@@ -87,6 +87,10 @@ class ForgotPasswordForm extends React.Component{
 					</div>
 				)
 				break;
+			}
+
+			default:{
+				return;
 			}
 		}
 		return dom;

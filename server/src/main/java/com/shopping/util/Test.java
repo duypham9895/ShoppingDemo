@@ -27,9 +27,13 @@ public class Test {
 		int dateOfYear = 0;
 
 		temp1 = lastTwoDigits / 12;
+//		System.out.println("temp1: "+temp1);
 		temp2 = lastTwoDigits % 12;
+//		System.out.println("temp2: "+temp2);
 		temp3 = temp2 / 4;
+//		System.out.println("temp3: "+temp3);
 		temp4 = (temp1 + temp2 + temp3) % 7;
+//		System.out.println("temp4: "+temp4);
 		for (i = 1; i < dayAndYear.length - 1; i += 2) {
 
 			if ((dayAndYear[i] / 100) == firstTwoDigits) {
@@ -52,12 +56,12 @@ public class Test {
 		/************* Input here ***************/
 
 		// Please enter the year you want
-		int yearChoose = 2235;
+		int yearChoose = 2000;
 
 		day[2] = dayOfFeb(yearChoose);
 
 		// Please enter the month you want
-		int monthChoose = 1;
+		int monthChoose = 2;
 
 		/************* Input here ***************/
 
@@ -65,8 +69,10 @@ public class Test {
 		String[] letterDate = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
 //		System.out.println(letterDate[doomsdayOfYear(yearChoose)]);
-		
+
 		int dayBegin = 0;
+		
+//		System.out.println(doomsdayOfYear(yearChoose));
 
 		switch (monthChoose) {
 		case 1: {
@@ -87,10 +93,14 @@ public class Test {
 		}
 		case 2: {
 			if (!isLeapYear(yearChoose)) {
-				System.out.println(letterDate[(doomsdayOfYear(yearChoose) + 1) % 7]);
+				dayBegin = (doomsdayOfYear(yearChoose) + 1) % 7;
+				System.out.println("asd");
+				System.out.println(letterDate[dayBegin]);
 				break;
 			}
-			System.out.println(letterDate[doomsdayOfYear(yearChoose)]);
+//			System.out.println("zxc");
+			dayBegin = doomsdayOfYear(yearChoose);
+			System.out.println(letterDate[dayBegin]);
 			break;
 		}
 
@@ -185,16 +195,16 @@ public class Test {
 		}
 		}
 		System.out.println();
-		System.out.println(dayBegin);
-		System.out.println(month[monthChoose]+"  "+yearChoose);
+//		System.out.println(dayBegin);
+		System.out.println(month[monthChoose] + "  " + yearChoose);
 		System.out.println(" M Tu  W Th  F  S  S");
 		int i;
-		for(i=0; i<dayBegin; i++) {
+		for (i = 0; i < dayBegin; i++) {
 			System.out.print("   ");
 		}
-		for(i=1; i <= day[monthChoose]; i++) {
+		for (i = 1; i <= day[monthChoose]; i++) {
 			System.out.printf("%2d ", i);
-			if(((i + dayBegin) % 7 == 0) || (i == day[monthChoose])) {
+			if (((i + dayBegin) % 7 == 0) || (i == day[monthChoose])) {
 				System.out.println();
 			}
 		}

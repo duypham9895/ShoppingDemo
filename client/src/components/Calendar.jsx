@@ -1,60 +1,324 @@
 import React from 'react';
 
+let dayAndYear = [ 0, 1500, 2, 1600, 1, 1700, 6, 1800, 4, 1900, 2, 2000, 1, 2100, 6, 2200, 4,
+			2300, 2, 2400, 1, 2500, 6 ];
+let arr = new Array(200);
+let day = [ 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+let calendar = new Array(6);
+for(var i = 0; i < 6; i++){
+	calendar[i] = new Array(7);
+}
 
 class Calendar extends React.Component{
 	constructor(props){
 		super(props);
-
+		this.dayAndYear = dayAndYear;
+		this.day = day;
+		this.arr = arr;
+		this.state = {
+			calendar: calendar,
+		}
 	}
 
 	componentWillMount(){
-		this.arr =  new Array(5);
+		var now = new Date();
+		var yearNow = now.getFullYear();
 
-		for( var i = 0; i < 5; i++){
-			this.arr[i] = new Array(7);
-		}
-
-		for(var i = 0; i < 5; i++){
-			for( var j = 0 ; j < 7; j++){
-				this.arr[i][j] = 0;
-			}
-		}
-
-		let now = new Date();
-
-		this.setState({
-			year: now.getFullYear(),
-			month: now.getMonth(),
-		})
-	}
-	render(){
-		console.log(this.state.month);
-		var yearDom = '';
-		var arr = new Array(200);
-		for(var i = this.state.year - 100; i <= this.state.year; i++){
+		for(var i = yearNow - 100; i <= yearNow + 100; i++){
 			arr.push(i);
 		}
+
+		this.setState({
+			year: yearNow,
+			month: now.getMonth() + 1,
+			day: now.getDate(),
+			calendar: this.changeCalendar(now.getMonth() + 1, yearNow),
+		})
+	}
+
+	onChange(event){
+		var newState = {...this.state, [event.target.name]: event.target.value};
+
+		newState = {...newState, 
+			calendar: this.changeCalendar(newState.month, newState.year)
+		};
+
+		this.setState(newState);
+	}
+
+	changeCalendar(month, year){
+		var i,j;
+		var firstDay = this.firstDayOfYear(parseInt(month), parseInt(year));
+		var lastDay = 0;
+		// console.log('next year: '+(parseInt(year) + 1));
+		if(parseInt(month) === 12){
+			lastDay = this.firstDayOfYear(1, (parseInt(year) + 1));
+		} else{
+			lastDay = this.firstDayOfYear((parseInt(month) + 1), parseInt(year));
+		}
+
+		
+
+		this.day[2] = this.dayOfFeb(year);
+
+		var dayOfMonth = day[month];
+		var newCalendar = [...this.state.calendar];
+
+		var count = 1;
+
+		
+		for(i = 0; i< firstDay; i++){
+			newCalendar[0][i] = '';
+		}
+
+		for(i = firstDay; i < 7; i++){
+			newCalendar[0][i] = count++;
+		}
+
+		for(j = 0; j < 7; j++){
+			newCalendar[5][j] = '';
+		}
+
+		if(firstDay < 5 || (firstDay === 5 && dayOfMonth < 31)){
+			for(i = 1; i < 4; i++){
+				for (j = 0; j < 7; j++){
+					newCalendar[i][j] = count++;
+				}
+			}
+			// console.log('next month ' + (parseInt(month) + 1));
+
+			if(lastDay === 0){
+				lastDay += 7;
+			}
+
+			for(j = 0; j < lastDay; j++){
+				newCalendar[4][j] = count++;
+			}
+
+			for(j = lastDay; j < 7; j++){
+				newCalendar[4][j] = '';
+			}
+
+			return newCalendar;
+		}else{
+			for(i = 1; i < 5; i++){
+				for (j = 0; j < 7; j++){
+					newCalendar[i][j] = count++;
+				}
+			}
+
+			if(lastDay === 0){
+				lastDay += 6;
+			}
+
+			for(j = 0; j < lastDay; j++){
+				newCalendar[5][j] = count++;
+			}
+
+			for(j = lastDay; j < 7; j++){
+				newCalendar[5][j] = '';
+			}
+
+			return newCalendar;
+		}
+	}
+
+	isLeapYear(year) {
+		var twoLastDigitsOfYear = parseInt(year % 100);
+		if (twoLastDigitsOfYear % 4 === 0) {
+			return true;
+		}
+		return false;
+	}
+
+	dayOfFeb(year) {
+		if (this.isLeapYear(year)) {
+			return 29;
+		}
+		return 28;
+	}
+
+
+	doomsdayOfYear(year) {
+		// var year = this.state.year;
+		var lastTwoDigits = year % 100;
+		var temp1, temp2, temp3, temp4;
+		var firstTwoDigits = parseInt(year / 100);
+		var i;
+		var dateOfYear = 0;
+
+		temp1 = parseInt(lastTwoDigits / 12);
+		temp2 = parseInt(lastTwoDigits % 12);
+		temp3 = parseInt(temp2 / 4);
+		temp4 = (temp1 + temp2 + temp3) % 7;
+		for (i = 1; i < this.dayAndYear.length - 1; i += 2) {
+			if ((parseInt(this.dayAndYear[i] / 100)) === firstTwoDigits) {
+				var temp = this.dayAndYear[i + 1];
+				temp += temp4;
+				dateOfYear = temp;
+			}
+		}
+		return dateOfYear;
+	}
+
+	firstDayOfYear(monthChoose, yearChoose){
+		var dayBegin = 0;
+
+		switch (monthChoose) {
+		case 1: {
+			if (!this.isLeapYear(yearChoose)) {
+				dayBegin = this.doomsdayOfYear(yearChoose) - 2;
+				while (dayBegin < 0) {
+					dayBegin = dayBegin + 7;
+				}
+				break;
+			}
+			dayBegin = this.doomsdayOfYear(yearChoose) - 3;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 2: {
+			if (!this.isLeapYear(yearChoose)) {
+
+				dayBegin = (this.doomsdayOfYear(yearChoose) + 1) % 7;
+				break;
+			}
+			dayBegin = this.doomsdayOfYear(yearChoose);
+			break;
+		}
+
+		case 3: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 6;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 4: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 3;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 5: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 8;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 6: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 5;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 7: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 10;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 8: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 7;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 9: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 4;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 10: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 9;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 11: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 6;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		case 12: {
+			dayBegin = this.doomsdayOfYear(yearChoose) - 11;
+			while (dayBegin < 0) {
+				dayBegin = dayBegin + 7;
+			}
+			break;
+		}
+
+		default:{
+			return 0;
+		}
+		}
+
+		return dayBegin;
+	}
+
+	pickedDay(col){
+		var date = new Date(this.state.year+'-'+this.state.month+'-'+col);
+		if(col.length === 0){
+			return;
+		}
+		this.setState({
+			day: col,
+		})
+
+		var handler = this.props.dataGetter;
+		if (handler !== undefined && typeof handler === 'function') {
+			handler(date);
+		}
+
+		return ;
+	}
+
+	
+
+	render(){
 		return(
-			<div className='customCalendar'>
+			<div className='uk-margin-top customCalendar'>
 			<div className='uk-grid-collapse uk-child-width-1-2@s' uk-grid=''>
 				<div>
-					<select className='uk-select' value={this.state.month} >
-						<option value='0'>Jan</option>
-						<option value='1'>Feb</option>
-						<option value='2'>Mar</option>
-						<option value='3'>Apr</option>
-						<option value='4'>May</option>
-						<option value='5'>Jun</option>
-						<option value='6'>Jul</option>
-						<option value='7'>Aug</option>
-						<option value='8'>Sep</option>
-						<option value='9'>Oct</option>
-						<option value='10'>Nov</option>
-						<option value='11'>Dec</option>
+					<select name='month' onChange={this.onChange.bind(this)} className='uk-select' value={this.state.month} >
+						<option value='1'>Jan</option>
+						<option value='2'>Feb</option>
+						<option value='3'>Mar</option>
+						<option value='4'>Apr</option>
+						<option value='5'>May</option>
+						<option value='6'>Jun</option>
+						<option value='7'>Jul</option>
+						<option value='8'>Aug</option>
+						<option value='9'>Sep</option>
+						<option value='10'>Oct</option>
+						<option value='11'>Nov</option>
+						<option value='12'>Dec</option>
 					</select>
 				</div>
 				<div>
-					<select className='uk-select' value={this.state.year} >
+					<select name='year' onChange={this.onChange.bind(this)} className='uk-select' value={this.state.year} >
 						{
 							arr.map((num, index) => {
 								return(
@@ -80,14 +344,15 @@ class Calendar extends React.Component{
 
 					<tbody>
 						{
-							this.arr.map((row, index) => {
+							this.state.calendar.map((row, index) => {
 								return(
 									<tr key={index}>
-
 									{
 										row.map((col, index) => {
 											return(
-												<td key={index}>{col}</td>
+												<td 
+												className={ col === this.state.day ? 'hiddenCalendar-chosen' : '' }
+												onClick={this.pickedDay.bind(this, col)} key={index}>{col}</td>
 											)
 										})
 									}

@@ -9,23 +9,29 @@
 
 }
 
-.form-control>label {
+.form-control > label {
     position: absolute;
     transition: all .2s;
-
+    z-index: 12;
 }
 
-.form-control>input:valid+label {
-    /*border: 1px solid black;*/
-    left: 0px;
-    top: -26px;
+.form-control > input{
+    padding: 30px 15px;
+    font-size: 22px;
+    border-radius: 5px;
 }
 
-.form-control>input:invalid+label {
-    /*border: 1px dashed black;*/
+.form-control > input:valid+label {
     left: 7px;
-    top: 7px;
-    /*color: red;*/
+    top: -12px;
+    background: white;
+    color: #1e87f0;
+    font-weight: 400;
+}
+
+.form-control > input:invalid+label {
+    left: 17px;
+    top: 18px;
 }
 
 .center {
@@ -76,9 +82,74 @@
 
 .customCalendar{
 	border: 1px solid black;
-	position: fixed;
 	top: 0;
 	left: 0;
 	background-color: white;
 	z-index: 9999;
+}
+
+.hiddenCalendar{
+	max-height: 0;
+	overflow: hidden;
+	transition: all .5s;
+	z-index: 9999;
+}
+
+.hiddenCalendar td{
+	cursor: pointer;
+}
+
+.hiddenCalendar td:hover {
+	background-color: powderblue;
+}
+
+/*.hiddenCalendar td:*/
+.hiddenCalendar-active {
+	max-height: 600px;
+}
+
+.hiddenCalendar .hiddenCalendar-chosen {
+	background-color: #1e87f0;
+	color: white;
+}
+
+.custom-button {
+    width: 100%;
+    padding: 30px 15px;
+    border-radius: 5px;
+    font-size: 18px;
+    border: 1px solid #e5e5e5;
+    box-sizing: border-box;
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.custom-button-active {
+    padding: 17px 15px;
+}
+
+.custom-button-label {
+    transition: all .3s;
+    position: absolute;
+    top: 44px;
+    left: 17px;
+    z-index: 20;
+}
+
+.custom-button-label-active {
+    top: 13px;
+    left: 7px;
+    background-color: white;
+    color: #1e87f0;
+}
+
+
+
+.flow-auto {
+    overflow: auto;
+    max-height: calc(100vh);
+}
+
+.flow-auto::-webkit-scrollbar{
+    display: none;
 }
