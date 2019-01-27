@@ -302,7 +302,7 @@ class Calendar extends React.Component{
 			<div className='uk-margin-top customCalendar'>
 			<div className='uk-grid-collapse uk-child-width-1-2@s' uk-grid=''>
 				<div>
-					<select name='month' onChange={this.onChange.bind(this)} className='uk-select' value={this.state.month} >
+					<select name='month' onChange={this.onChange.bind(this)} className='custom-select' value={this.state.month} >
 						<option value='1'>Jan</option>
 						<option value='2'>Feb</option>
 						<option value='3'>Mar</option>
@@ -318,7 +318,7 @@ class Calendar extends React.Component{
 					</select>
 				</div>
 				<div>
-					<select name='year' onChange={this.onChange.bind(this)} className='uk-select' value={this.state.year} >
+					<select name='year' onChange={this.onChange.bind(this)} className='custom-select' value={this.state.year} >
 						{
 							arr.map((num, index) => {
 								return(

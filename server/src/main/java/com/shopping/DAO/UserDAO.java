@@ -13,28 +13,32 @@ import com.shopping.entity.User;
 @Repository
 public class UserDAO {
 	private static final String COLLECTION_NAME = "users";
-	
+
 	@Autowired
 	MongoTemplate template;
-	
-	
+
 	public User insert(User user) {
-		return template.insert(user,COLLECTION_NAME);
+		return template.insert(user, COLLECTION_NAME);
 	}
-	
-	public List<User> getList(){
-		return template.findAll(User.class,COLLECTION_NAME);
+
+	public List<User> getList() {
+		return template.findAll(User.class, COLLECTION_NAME);
 	}
-	
+
 	public User find(String username) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("username").is(username));
 		return template.findOne(query, User.class, COLLECTION_NAME);
 	}
-	
-	public User update( User user) {
-		return template.save(user,COLLECTION_NAME);
+
+	public User find(String field, String value) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where(field).is(value));
+		return template.findOne(query, User.class, COLLECTION_NAME);
 	}
-	
+
+	public User update(User user) {
+		return template.save(user, COLLECTION_NAME);
+	}
 
 }

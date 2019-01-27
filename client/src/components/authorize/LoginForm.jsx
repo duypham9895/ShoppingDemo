@@ -47,7 +47,6 @@ class LoginForm extends React.Component {
 						<div className='uk-grid-collapse' uk-grid='' >
 							<div className='uk-width-4-5'>
 								<p onClick={this.forgot.bind(this)}>Forget password</p>
-								<br/>
 								<p onClick={this.create.bind(this)}>Create new account</p>
 							</div>
 							<div className='uk-width-1-5'>

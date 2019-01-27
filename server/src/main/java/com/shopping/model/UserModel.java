@@ -2,23 +2,32 @@ package com.shopping.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserModel {
 	@NotEmpty
+	@Size(min = 8, max = 30, message = "Your username invalid")
 	private String username;
 
 	@NotEmpty
+	@Size(min = 8, max = 36, message = "Your password invalid")
 	private String password;
-
+	
 	private String fullname;
-
+	
+	@NotNull
 	private Date birthday;
 
 	@NotEmpty
+	@Digits(fraction = 0, message = "Your phone is not correct", integer = 10)
 	private String phone;
 
 	@NotEmpty
+	@Email
 	private String email;
 
 	private String notes;

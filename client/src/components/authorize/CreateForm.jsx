@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Calendar from '../Calendar.jsx';
-import { changeUserInfo } from '../../actions/CreateAction.jsx';
+import { validInfo, changeUserInfo } from '../../actions/CreateAction.jsx';
 
 const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September",
 				"October", "November", "December" ];
@@ -35,71 +35,103 @@ class CreateForm extends React.Component{
 		this.props.dispatch(changeUserInfo(newUser));
 	}
 
+	handleValidInfo(){
+		this.props.dispatch(validInfo(this.props.user, this.props.message));
+	}
+
 	render(){
+		const message = this.props.message;
+		console.log(message);
 		const user = this.props.user;
 		return(
 			<div>
-			<div className='uk-padding uk-position-center boxshadow flow-auto' style={{width: '45%'}}>
+				<div className='uk-padding uk-position-center boxshadow flow-auto' style={{width: '45%'}}>
 
-				<h2 className='uk-text-center uk-text-bold uk-text-primary'>Sign Up</h2>
-				<div className='uk-margin-medium form-control '>
-					<input onChange={this.onChangeInput.bind(this)} name='username' id='username'
-					className='uk-input' required='required' type='text' />
-					<label htmlFor='username' >Username</label>
-				</div>
+					<h2 className='uk-text-center uk-text-bold uk-text-primary'>Sign Up</h2>
+					<p className={
+							this.props.message.username==='' ? 'hidden' : 'uk-text-danger'
+						}>{this.props.message.username}</p>
+					<div className='uk-margin-medium form-control '>
+						<input onChange={this.onChangeInput.bind(this)} name='username' id='username'
+						className='uk-input' required='required' type='text' />
+						<label htmlFor='username' >Username</label>
+					</div>
 
-				<div className='uk-margin-medium form-control '>
-					<input onChange={this.onChangeInput.bind(this)} name='password' id='password'
-					className='uk-input' required='required' type='password' />
-					<label htmlFor='password' >Password</label>
-				</div>
+					<p className={
+							message.password==='' ? 'hidden' : 'uk-text-danger'
+						}>{message.password}</p>
+					<div className='uk-margin-medium form-control '>
+						
+						<input onChange={this.onChangeInput.bind(this)} name='password' id='password'
+						className='uk-input' required='required' type='password' />
+						<label htmlFor='password' >Password</label>
+					</div>
 
-				<div className='uk-margin-bottom form-control '>
-					<input onChange={this.onChangeInput.bind(this)} name='confirmPassword' id='confirmPassword'
-					className='uk-input' required='required' type='password' />
-					<label htmlFor='confirmPassword' >Confirm Password</label>
-				</div>
-				{
-					user.birthday===null ? 
-					(
-						<div className='uk-margin-small uk-position-relative'>
-							<label className='custom-button-label'>Birthday</label>
-							<br/>
-							<div className='custom-button' onClick={this.calendar.bind(this)}></div>
-							<div className={
-								this.state.isHidden===false ? 'hiddenCalendar hiddenCalendar-active' : 'hiddenCalendar'
-							} >
-								<Calendar dataGetter={ this.changeDate.bind(this) }/>
+					<p className={
+							message.confirmPassword==='' ? 'hidden' : 'uk-text-danger'
+						}>{message.confirmPassword}</p>
+					<div className='uk-margin-bottom form-control '>
+						
+						<input onChange={this.onChangeInput.bind(this)} name='confirmPassword' id='confirmPassword'
+						className='uk-input' required='required' type='password' />
+						<label htmlFor='confirmPassword' >Confirm Password</label>
+					</div>
+					<p className={
+									message.birthday==='' ? 'hidden' : 'uk-text-danger'
+								}>{message.birthday}</p>
+					{
+						user.birthday===null ? 
+						(
+							
+							<div className='uk-margin-small uk-position-relative'>
+								
+								<label className='custom-button-label'>Birthday</label>
+								<br/>
+								<div className='custom-button' onClick={this.calendar.bind(this)}></div>
+								<div className={
+									this.state.isHidden===false ? 'hiddenCalendar hiddenCalendar-active' : 'hiddenCalendar'
+								} >
+									<Calendar dataGetter={ this.changeDate.bind(this) }/>
+								</div>
 							</div>
-						</div>
-					) : 
-					(
-						<div className='uk-margin-small uk-position-relative '>
-							<label className='custom-button-label custom-button-label-active'>Birthday</label>
-							<br/>
-							<div className='custom-button custom-button-active' onClick={this.calendar.bind(this)}>{
-								monthNames[user.birthday.getMonth()]+' '+user.birthday.getDate()+' '+ user.birthday.getFullYear()
-							}</div>
-							<div className={
-								this.state.isHidden===false ? 'hiddenCalendar hiddenCalendar-active' : 'hiddenCalendar'
-							} >
-								<Calendar dataGetter={ this.changeDate.bind(this) }/>
+						) : 
+						(
+							<div className='uk-margin-small uk-position-relative '>
+								
+								<label className='custom-button-label custom-button-label-active'>Birthday</label>
+								<br/>
+								<div className='custom-button custom-button-active' onClick={this.calendar.bind(this)}>{
+									monthNames[user.birthday.getMonth()]+' '+user.birthday.getDate()+' '+ user.birthday.getFullYear()
+								}</div>
+								<div className={
+									this.state.isHidden===false ? 'hiddenCalendar hiddenCalendar-active' : 'hiddenCalendar'
+								} >
+									<Calendar dataGetter={ this.changeDate.bind(this) }/>
+								</div>
 							</div>
-						</div>
-					)
-				}
-				<div className='uk-margin-medium form-control '>
-					<input onChange={this.onChangeInput.bind(this)} name='email' id='email'
-					className='uk-input' required='required' type='text' />
-					<label htmlFor='email' >Email</label>
-				</div>
+						)
+					}
 
-				<div className='uk-margin-medium form-control '>
-					<input onChange={this.onChangeInput.bind(this)} name='phone' id='phone'
-					className='uk-input' required='required' type='text' />
-					<label htmlFor='phone' >Phone</label>
+					<p className='uk-text-danger'>{message.email}</p>
+					<div className='uk-margin-medium form-control '>
+						
+						<input onChange={this.onChangeInput.bind(this)} name='email' id='email'
+						className='uk-input' required='required' type='text' />
+						<label htmlFor='email' >Email</label>
+					</div>
+
+					<p className={
+							message.phone==='' ? 'hidden' : 'uk-text-danger'
+						}>{message.phone}</p>
+					<div className='uk-margin-medium form-control '>
+						
+						<input onChange={this.onChangeInput.bind(this)} name='phone' id='phone'
+						className='uk-input' required='required' type='text' />
+						<label htmlFor='phone' >Phone</label>
+					</div>
+
+					<button onClick={this.handleValidInfo.bind(this)} className='uk-button uk-button-primary'>Submit</button>
 				</div>
-			</div>
 			</div>
 		)
 	}
@@ -110,6 +142,8 @@ class CreateForm extends React.Component{
 const mapStateToProps = (store) => {
 	return{
 		user: store.CreateUser.user,
+		message: store.CreateUser.message,
+		result: store.CreateUser.result,
 	}
 }
 

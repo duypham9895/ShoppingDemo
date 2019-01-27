@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shopping.entity.User;
 import com.shopping.model.LoginUserModel;
-import com.shopping.model.UserModel;
 import com.shopping.service.LoginService;
 import com.shopping.service.UserService;
 import com.shopping.util.ServiceResult;
@@ -34,25 +33,15 @@ public class AuthorizeController {
 		return loginService.getList();
 	}
 
-	@GetMapping("/new")
-	public ServiceResult insert(UserModel model) {
-		model.setUsername("admin");
-		model.setPassword("admin");
-		model.setEmail("duypham9895@gmail.com");
-		model.setPhone("0963769049");
-		return loginService.insert(model);
-	}
-
 	@PostMapping("/login")
 	public ServiceResult login(@RequestBody LoginUserModel model) {
 		return loginService.getDataUserOnClient(model);
 	}
 
 	@GetMapping("/forgot")
-	public ServiceResult forgotPassword(@RequestParam(name="username") String username) {
+	public ServiceResult forgotPassword(@RequestParam(name = "username") String username) {
 		System.out.println(username);
 		return userService.sendForgotPasswordMail(username);
 	}
-	
 
 }
