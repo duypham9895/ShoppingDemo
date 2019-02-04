@@ -33,6 +33,7 @@ public class UserController {
 	
 	@GetMapping("/{username}")
 	public ServiceResult getUser(@PathVariable(name="username") String username) {
+		System.out.println("success");
 		return userService.getUser(username);
 	}
 	

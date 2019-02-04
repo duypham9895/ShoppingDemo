@@ -99,6 +99,10 @@
 	cursor: pointer;
 }
 
+.pointer{
+    cursor: pointer;
+}
+
 .hiddenCalendar td:hover {
 	background-color: powderblue;
 }

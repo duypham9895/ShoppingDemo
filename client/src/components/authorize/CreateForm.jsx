@@ -35,6 +35,48 @@ class CreateForm extends React.Component{
 		this.props.dispatch(changeUserInfo(newUser));
 	}
 
+	handleValidUsername(){
+		var user = {...this.props.user};
+		var temp = user.username;
+		var message = {...this.props.message}
+
+		if(temp.length < 4){
+			message.username = '(*) Your username length must be longer than 7.';
+			this.props.dispatch(validInfo(user, message));
+		} else {
+			if( temp.match(/\W/) != null ){
+				message.username = '(*) Your username must not contain special character.';
+				this.props.dispatch(validInfo(user, message));
+			}
+			else{
+				fetch('http://localhost:8080/user/'+temp,{
+					method: 'GET',
+					mode: 'cors',
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+				.then(
+					(res) => res.json(),
+					(err) => console.log(err)
+				)
+				.then(
+					(res) => {
+						if( res.object != null){
+							message.username = '(*) Your usename has already exsited.';
+							this.props.dispatch(validInfo(user, message));
+						} else{
+							message.username = '';
+							this.props.dispatch(validInfo(user, message));
+						}
+					}
+				);
+			}
+		}
+
+
+	}
+
 	handleValidInfo(){
 		this.props.dispatch(validInfo(this.props.user, this.props.message));
 	}
@@ -42,6 +84,7 @@ class CreateForm extends React.Component{
 	render(){
 		const message = this.props.message;
 		console.log(message);
+		// console.log(message.username);
 		const user = this.props.user;
 		return(
 			<div>
@@ -49,8 +92,8 @@ class CreateForm extends React.Component{
 
 					<h2 className='uk-text-center uk-text-bold uk-text-primary'>Sign Up</h2>
 					<p className={
-							this.props.message.username==='' ? 'hidden' : 'uk-text-danger'
-						}>{this.props.message.username}</p>
+							message.username === '' ? 'hidden' : 'uk-text-danger'
+						}>{message.username}</p>
 					<div className='uk-margin-medium form-control '>
 						<input onChange={this.onChangeInput.bind(this)} name='username' id='username'
 						className='uk-input' required='required' type='text' />
@@ -130,7 +173,7 @@ class CreateForm extends React.Component{
 						<label htmlFor='phone' >Phone</label>
 					</div>
 
-					<button onClick={this.handleValidInfo.bind(this)} className='uk-button uk-button-primary'>Submit</button>
+					<button onClick={this.handleValidUsername.bind(this)} className='uk-button uk-button-primary'>Submit</button>
 				</div>
 			</div>
 		)

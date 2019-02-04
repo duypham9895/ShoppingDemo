@@ -8,85 +8,90 @@ export function changeUserInfo(user) {
 	}
 }
 
+// export function validUsername(user)
+
 export function validInfo(user, oldMessage) {
 	return function (dispatch) {
 		var message = { ...oldMessage };
 		var temp = user.username;
 		var flag = true;
 
-		if(temp.length < 8){
-			console.log('checking username');
-			flag = false;
-			message.username = '(*) Your username length must be longer than 7.';
-		} else {
-			if( temp.match(/\W/) != null ){
-				flag = false;
-				message.username = '(*) Your username must not contain special character.';
-			} else {
+		// if(temp.length < 8){
+		// 	console.log('checking username');
+		// 	flag = false;
+		// 	message.username = '(*) Your username length must be longer than 7.';
+		// } else {
+		// 	if( temp.match(/\W/) != null ){
+		// 		flag = false;
+		// 		message.username = '(*) Your username must not contain special character.';
+		// 	} else {
 
-				message.username = '';
-				// fetch('http://localhost:8080/user/'+temp,{
-				// 	method: 'GET',
-				// 	mode: 'cors',
-				// 	headers: {
-				// 		'Content-Type': 'application/json',
-				// 	}
-				// })
-				// .then(
-				// 	(res) => res.json(),
-				// 	(err) => console.log(err)
-				// )
-				// .then(
-				// 	(res) => {
-				// 		if( res.object != null){
-				// 			flag = false;
-				// 			message.username = '(*) Your usename has already exsited.';
-				// 		} else{
-				// 			message.username = '';
-				// 		}
-				// 	}
-				// )
-			}
-		}
+				// message.username = '';
+				fetch('http://localhost:8080/user/'+temp,{
+					method: 'GET',
+					mode: 'cors',
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+				.then(
+					(res) => res.json(),
+					(err) => console.log(err)
+				)
+				.then(
+					(res) => {
+						if( res.object != null){
+							flag = false;
+							message.username = '(*) Your usename has already exsited.';
+							console.log(res.object);
+							console.log('in');
+						} else{
+							console.log('out');
+							message.username = '';
+						}
+					}
+				)
+		// 	}
+		// }
 
-		temp = user.password;
+		// temp = user.password;
 
-		if( temp.length < 8 ){
-			flag = false;
-			message.password = '(*) Your password length must be longer than 7.';
-		} else {
-			if( temp !== user.confirmPassword ){
-				flag = false;
-				message.password = '(*) Your password and Confirm Password must be matched.';
-				message.confirmPassword = '(*) Your password and Confirm Password must be matched.';
-			} else {
-				message.password = '';
-				message.confirmPassword = '';
-			}
-		}
+		// if( temp.length < 8 ){
+		// 	flag = false;
+		// 	message.password = '(*) Your password length must be longer than 7.';
+		// } else {
+		// 	if( temp !== user.confirmPassword ){
+		// 		flag = false;
+		// 		message.password = '(*) Your password and Confirm Password must be matched.';
+		// 		message.confirmPassword = '(*) Your password and Confirm Password must be matched.';
+		// 	} else {
+		// 		message.password = '';
+		// 		message.confirmPassword = '';
+		// 	}
+		// }
 
-		var now = new Date().getFullYear();
+		// var now = new Date().getFullYear();
 
-		if ( user.birthday === null){
-			flag = false;
-			message.birthday = '(*) Your birthday must not be empty.';
-		} else {
-			if( ( now - user.birthday.getFullYear() ) < 18){
-				flag = false;
-				message.birthday = '(*) You must be 18 or older.';
-			} else {
-				message.birthday = '';
-			}
-		}
+		// if ( user.birthday === null){
+		// 	flag = false;
+		// 	message.birthday = '(*) Your birthday must not be empty.';
+		// } else {
+		// 	if( ( now - user.birthday.getFullYear() ) < 18){
+		// 		flag = false;
+		// 		message.birthday = '(*) You must be 18 or older.';
+		// 	} else {
+		// 		message.birthday = '';
+		// 	}
+		// }
 
-		var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+		// var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
 		
-		if(user.email.match(re) === null) {
-			flag = false;
-			message.email = '(*) Your email must be email type.';
-		} else {
+		// if(user.email.match(re) === null) {
+		// 	flag = false;
+		// 	message.email = '(*) Your email must be email type.';
+		// } else {
 
-			message.email = '';
+		// 	message.email = '';
 			// fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
 			// 	method: 'GET',
 			// 	mode: 'cors',
@@ -99,14 +104,14 @@ export function validInfo(user, oldMessage) {
 			// 		(err) => console.log(err)
 			// )
 			// .then((res) => console.log(res));
-		}
+		// }
 
-		if(user.phone.length < 10 || ( user.phone.match(/\D/) != null ) ){
-			flag = false;
-			message.phone = '(*) Your phone must be phone type.';
-		} else {
+		// if(user.phone.length < 10 || ( user.phone.match(/\D/) != null ) ){
+		// 	flag = false;
+		// 	message.phone = '(*) Your phone must be phone type.';
+		// } else {
 
-			message.phone = '';
+		// 	message.phone = '';
 			// fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
 			// 	method: 'GET',
 			// 	mode: 'cors',
@@ -126,15 +131,16 @@ export function validInfo(user, oldMessage) {
 			// 		},
 			// 		(err) => console.log(err)
 			// )
+			dispatch({
+				type: 'CU_VALIDATION',
+				payload: {
+					message: message,
+					result: flag,
+				}
+			})
 		}
 
-		dispatch({
-			type: 'CU_VALIDATION',
-			payload: {
-				message: message,
-				result: flag,
-			}
-		})
+		
 		
 		// fetch('http://localhost:8080/user/new',{
 		// 	method: 'POST',
@@ -165,5 +171,6 @@ export function validInfo(user, oldMessage) {
 		// 		}
 		// 	}
 		// )
-	}
+		
+	
 }
