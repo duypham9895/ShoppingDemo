@@ -56,6 +56,7 @@ public class UserService {
 
 	public User getUser(String field, String value) {
 		System.out.println("serive get"+" "+field+" "+value);
+//		System.out.println("asdasd "+userDAO.find(field, value).getUsername());
 		return userDAO.find(field, value);
 	}
 

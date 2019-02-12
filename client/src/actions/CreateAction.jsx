@@ -12,9 +12,8 @@ export function changeUserInfo(user) {
 
 export function validInfo(user, oldMessage) {
 	return function (dispatch) {
-		var message = { ...oldMessage };
-		var temp = user.username;
-		var flag = true;
+		// var message = { ...oldMessage };
+		// var flag = true;
 
 		// if(temp.length < 8){
 		// 	console.log('checking username');
@@ -27,30 +26,30 @@ export function validInfo(user, oldMessage) {
 		// 	} else {
 
 				// message.username = '';
-				fetch('http://localhost:8080/user/'+temp,{
-					method: 'GET',
-					mode: 'cors',
-					headers: {
-						'Content-Type': 'application/json',
-					}
-				})
-				.then(
-					(res) => res.json(),
-					(err) => console.log(err)
-				)
-				.then(
-					(res) => {
-						if( res.object != null){
-							flag = false;
-							message.username = '(*) Your usename has already exsited.';
-							console.log(res.object);
-							console.log('in');
-						} else{
-							console.log('out');
-							message.username = '';
-						}
-					}
-				)
+				// fetch('http://localhost:8080/user/'+temp,{
+				// 	method: 'GET',
+				// 	mode: 'cors',
+				// 	headers: {
+				// 		'Content-Type': 'application/json',
+				// 	}
+				// })
+				// .then(
+				// 	(res) => res.json(),
+				// 	(err) => console.log(err)
+				// )
+				// .then(
+				// 	(res) => {
+				// 		if( res.object != null){
+				// 			flag = false;
+				// 			message.username = '(*) Your usename has already exsited.';
+				// 			console.log(res.object);
+				// 			console.log('in');
+				// 		} else{
+				// 			console.log('out');
+				// 			message.username = '';
+				// 		}
+				// 	}
+				// )
 		// 	}
 		// }
 
@@ -92,18 +91,18 @@ export function validInfo(user, oldMessage) {
 		// } else {
 
 		// 	message.email = '';
-			// fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
-			// 	method: 'GET',
-			// 	mode: 'cors',
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	}
-			// })
-			// .then(
-			// 		(res) => console.log(res),
-			// 		(err) => console.log(err)
-			// )
-			// .then((res) => console.log(res));
+		// 	fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
+		// 		method: 'GET',
+		// 		mode: 'cors',
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 		}
+		// 	})
+		// 	.then(
+		// 			(res) => console.log(res),
+		// 			(err) => console.log(err)
+		// 	)
+		// 	.then((res) => console.log(res));
 		// }
 
 		// if(user.phone.length < 10 || ( user.phone.match(/\D/) != null ) ){
@@ -112,30 +111,30 @@ export function validInfo(user, oldMessage) {
 		// } else {
 
 		// 	message.phone = '';
-			// fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
-			// 	method: 'GET',
-			// 	mode: 'cors',
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	}
-			// })
-			// .then(
-			// 		(res) => {
+		// 	fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
+		// 		method: 'GET',
+		// 		mode: 'cors',
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 		}
+		// 	})
+		// 	.then(
+		// 			(res) => {
 
-			// 			if( res.headers.get('Content-Type') === 'undefined'){
-			// 				message.phone = '';
-			// 			} else {
-			// 				flag = false;
-			// 				message.phone = '(*) Your phone has already been used.';
-			// 			}
-			// 		},
-			// 		(err) => console.log(err)
-			// )
+		// 				if( res.headers.get('Content-Type') === 'undefined'){
+		// 					message.phone = '';
+		// 				} else {
+		// 					flag = false;
+		// 					message.phone = '(*) Your phone has already been used.';
+		// 				}
+		// 			},
+		// 			(err) => console.log(err)
+		// 	)
 			dispatch({
 				type: 'CU_VALIDATION',
 				payload: {
-					message: message,
-					result: flag,
+					message: oldMessage,
+					// result: result,
 				}
 			})
 		}

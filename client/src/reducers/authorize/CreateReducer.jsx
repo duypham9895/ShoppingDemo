@@ -32,7 +32,7 @@ export default function reducer(state=initialState, action){
 			return {
 				...state,
 				message: action.payload.message,
-				result: action.payload.result,
+				// result: action.payload.result,
 			}
 		}
 

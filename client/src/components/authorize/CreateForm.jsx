@@ -11,7 +11,16 @@ class CreateForm extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			isHidden: true
+			isHidden: true,
+			message: {
+				username: '',
+				password: '',
+				confirmPassword: '',
+				birthday: '',
+				email: '',
+				phone: '',
+			},
+			result: true,
 		}
 	}
 
@@ -35,55 +44,229 @@ class CreateForm extends React.Component{
 		this.props.dispatch(changeUserInfo(newUser));
 	}
 
-	handleValidUsername(){
+	fetchUsername(){
 		var user = {...this.props.user};
-		var temp = user.username;
-		var message = {...this.props.message}
+		var result = {...this.state.result};
 
-		if(temp.length < 4){
-			message.username = '(*) Your username length must be longer than 7.';
-			this.props.dispatch(validInfo(user, message));
-		} else {
-			if( temp.match(/\W/) != null ){
-				message.username = '(*) Your username must not contain special character.';
-				this.props.dispatch(validInfo(user, message));
+		var message = '';
+		var rs = false;
+
+		fetch('http://localhost:8080/user/get?field=username&value='+user.username, {
+			method: 'GET',
+			mode: 'cors',
+			headers: {
+				'Content-Type': 'application/json',
 			}
-			else{
-				fetch('http://localhost:8080/user/'+temp,{
-					method: 'GET',
-					mode: 'cors',
-					headers: {
-						'Content-Type': 'application/json',
+		})
+		.then(
+				(res) => {
+					if( res.headers.get('Content-Type') === null ){
+						rs = true;
+					} else {
 					}
+				},
+				(err) => console.log(err),
+		)
+		.then(
+			(res) => {
+				if( rs === false){
+					message = '(*) Your usename has already exsited.';
+					result = false;
+					this.setState({
+						message: {...this.state.message, username: message},
+						result: result,
+					})
+				} else{
+					message = '';
+					result = true;
+					this.setState({
+						message: {...this.state.message, username: message},
+						result: result,
+					})
+				}
+			}
+		);
+	}
+
+	fetchEmail(){
+		var user = {...this.props.user};
+		var result = {...this.state.result};
+
+		var message = '';
+		var rs = true;
+
+		fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
+			method: 'GET',
+			mode: 'cors',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		.then(
+				(res) => {
+					if( res.headers.get('Content-Type') === null ){
+						rs = false;
+					} else {
+					}
+				},
+				(err) => console.log(err),
+		)
+		.then((res) => {
+			if( rs === true ){
+				message = '(*) Your email has already exsited.';
+				result = false;
+				this.setState({
+					message: {...this.state.message, email: message},
+					result: result,
 				})
-				.then(
-					(res) => res.json(),
-					(err) => console.log(err)
-				)
-				.then(
-					(res) => {
-						if( res.object != null){
-							message.username = '(*) Your usename has already exsited.';
-							this.props.dispatch(validInfo(user, message));
-						} else{
-							message.username = '';
-							this.props.dispatch(validInfo(user, message));
-						}
-					}
-				);
+			} else {
+				message = '';
+				result = true;
+				this.setState({
+					message: {...this.state.message, email: message},
+					result: result,
+				})
 			}
-		}
+		});
+	}
 
+	fetchPhone(){
+		var user = {...this.props.user};
+		var result = true;
 
+		var message = '';
+		var rs = true;
+
+		fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
+			method: 'GET',
+			mode: 'cors',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		.then(
+				(res) => {
+					if( res.headers.get('Content-Type') === null ){
+						rs = false;
+					} else {
+					}
+				},
+				(err) => console.log(err),
+		)
+		.then((res) => {
+			console.log('2');
+			if( rs === true ){
+				message = '(*) Your phone has already exsited.';
+				result = false;
+				this.setState({
+					message: {...this.state.message, phone: message},
+					result: {...this.state.result, result},
+				})
+			} else {
+				message = '';
+				result = true;
+				this.setState({
+					message: {...this.state.message, phone: message},
+					result: {...this.state.result, result},
+				})
+			}
+		});
 	}
 
 	handleValidInfo(){
-		this.props.dispatch(validInfo(this.props.user, this.props.message));
+		var user = {...this.props.user};
+		var message = {...this.state.message}
+		var result = {...this.state.result};
+
+		// var temp = user.username;
+
+		// if(temp.length < 4){
+		// 	message.username = '(*) Your username length must be longer than 7.';
+		// 	result = false;
+		// } else {
+		// 	if( temp.match(/\W/) != null ){
+		// 		message.username = '(*) Your username must not contain special character.';
+		// 		result = false;
+		// 	}
+		// 	else{
+		// 		this.fetchUsername();
+		// 		result = this.state.result;
+		// 	}
+		// }
+
+		// temp = user.password;
+
+		// if( temp.length < 8 ){
+		// 	message.password = '(*) Your password length must be longer than 7.';
+		// 	result = false;
+		// } else {
+		// 	if( temp !== user.confirmPassword ){
+		// 		message.password = '(*) Your password and Confirm Password must be matched.';
+		// 		message.confirmPassword = '(*) Your password and Confirm Password must be matched.';
+		// 		result = false;
+		// 	} else {
+		// 		message.password = '';
+		// 		message.confirmPassword = '';
+		// 		result = true;
+		// 	}
+		// }
+
+
+		// var now = new Date().getFullYear();
+
+		// if ( user.birthday === null){
+		// 	message.birthday = '(*) Your birthday must not be empty.';
+		// 	result = false;
+		// } else {
+		// 	if( ( now - user.birthday.getFullYear() ) < 18){
+		// 		message.birthday = '(*) You must be 18 or older.';
+		// 		result = false;
+		// 	} else {
+		// 		message.birthday = '';
+		// 		result = true;
+		// 	}
+		// }
+
+		// var re = /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
+		
+		// if(!user.email.match(re)) {
+		// 	message.email = '(*) Your email must be email type.';
+		// 	result = false;
+		// } else {
+		// 	this.fetchEmail();
+		// 	result = this.state.result;
+		// }
+
+		if(user.phone.length < 10 || ( user.phone.match(/\D/) != null ) ){
+			message.phone = '(*) Your phone must be phone type.';
+			result = false;
+		} else {
+			console.log('1');
+			this.fetchPhone();
+			result = this.state.result;
+			console.log(result);
+		}
+
+		this.setState({
+			message: message,
+			result: result,
+		})
+
+		return result;
+	}
+
+	test(){
+		if(this.handleValidInfo() === true){
+			console.log('true');
+		}
+		else{
+			console.log('false');
+		}
 	}
 
 	render(){
-		const message = this.props.message;
-		console.log(message);
+		// console.log(this.handleValidInfo());
+		const message = this.state.message;
 		// console.log(message.username);
 		const user = this.props.user;
 		return(
@@ -154,8 +337,9 @@ class CreateForm extends React.Component{
 							</div>
 						)
 					}
-
-					<p className='uk-text-danger'>{message.email}</p>
+					<p className={
+							message.email==='' ? 'hidden' : 'uk-text-danger'
+						}>{message.email}</p>
 					<div className='uk-margin-medium form-control '>
 						
 						<input onChange={this.onChangeInput.bind(this)} name='email' id='email'
@@ -173,7 +357,7 @@ class CreateForm extends React.Component{
 						<label htmlFor='phone' >Phone</label>
 					</div>
 
-					<button onClick={this.handleValidUsername.bind(this)} className='uk-button uk-button-primary'>Submit</button>
+					<button onClick={this.test.bind(this)} className='uk-button uk-button-primary'>Submit</button>
 				</div>
 			</div>
 		)
