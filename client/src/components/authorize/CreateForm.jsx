@@ -44,14 +44,21 @@ class CreateForm extends React.Component{
 		this.props.dispatch(changeUserInfo(newUser));
 	}
 
-	fetchUsername(){
+	async handleSetStateUsername(oldMessage, oldResult){
+		await this.setState({
+			message: {...this.state.message, username: oldMessage},
+			result: {...this.state.result, oldResult},
+		})
+	}
+
+	async fetchUsername(){
 		var user = {...this.props.user};
 		var result = {...this.state.result};
 
 		var message = '';
 		var rs = false;
 
-		fetch('http://localhost:8080/user/get?field=username&value='+user.username, {
+		await fetch('http://localhost:8080/user/get?field=username&value='+user.username, {
 			method: 'GET',
 			mode: 'cors',
 			headers: {
@@ -72,30 +79,31 @@ class CreateForm extends React.Component{
 				if( rs === false){
 					message = '(*) Your usename has already exsited.';
 					result = false;
-					this.setState({
-						message: {...this.state.message, username: message},
-						result: result,
-					})
+					this.handleSetStateUsername(message,result);
 				} else{
 					message = '';
 					result = true;
-					this.setState({
-						message: {...this.state.message, username: message},
-						result: result,
-					})
+					this.handleSetStateUsername(message,result);
 				}
 			}
 		);
 	}
 
-	fetchEmail(){
+	async handleSetStateEmail(oldMessage, oldResult){
+		await this.setState({
+			message: {...this.state.message, email: oldMessage},
+			result: {...this.state.result, oldResult},
+		})
+	}
+
+	async fetchEmail(){
 		var user = {...this.props.user};
 		var result = {...this.state.result};
 
 		var message = '';
 		var rs = true;
 
-		fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
+		await fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
 			method: 'GET',
 			mode: 'cors',
 			headers: {
@@ -115,137 +123,134 @@ class CreateForm extends React.Component{
 			if( rs === true ){
 				message = '(*) Your email has already exsited.';
 				result = false;
-				this.setState({
-					message: {...this.state.message, email: message},
-					result: result,
-				})
+				this.handleSetStateEmail(message,result);
 			} else {
 				message = '';
 				result = true;
-				this.setState({
-					message: {...this.state.message, email: message},
-					result: result,
-				})
+				this.handleSetStateEmail(message,result);
 			}
 		});
 	}
 
-	fetchPhone(){
+	async handleSetStatePhone(oldMessage, oldResult){
+		await this.setState({
+			message: {...this.state.message, phone: oldMessage},
+			result: {...this.state.result, oldResult},
+		})
+	}
+
+	async fetchPhone(){
 		var user = {...this.props.user};
 		var result = true;
 
 		var message = '';
 		var rs = true;
 
-		fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
+		await fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
 			method: 'GET',
 			mode: 'cors',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		})
-		.then(
-				(res) => {
+		.then((res) => {
 					if( res.headers.get('Content-Type') === null ){
 						rs = false;
 					} else {
+
 					}
 				},
-				(err) => console.log(err),
+				(err) => console.log(err)
 		)
 		.then((res) => {
 			console.log('2');
 			if( rs === true ){
 				message = '(*) Your phone has already exsited.';
 				result = false;
-				this.setState({
-					message: {...this.state.message, phone: message},
-					result: {...this.state.result, result},
-				})
+				this.handleSetStatePhone(message,result);
 			} else {
 				message = '';
 				result = true;
-				this.setState({
-					message: {...this.state.message, phone: message},
-					result: {...this.state.result, result},
-				})
+				this.handleSetStatePhone(message,result);
 			}
 		});
 	}
 
-	handleValidInfo(){
+	async handleValidInfo(){
 		var user = {...this.props.user};
 		var message = {...this.state.message}
 		var result = {...this.state.result};
 
-		// var temp = user.username;
+		var temp = user.username;
 
-		// if(temp.length < 4){
-		// 	message.username = '(*) Your username length must be longer than 7.';
-		// 	result = false;
-		// } else {
-		// 	if( temp.match(/\W/) != null ){
-		// 		message.username = '(*) Your username must not contain special character.';
-		// 		result = false;
-		// 	}
-		// 	else{
-		// 		this.fetchUsername();
-		// 		result = this.state.result;
-		// 	}
-		// }
+		if(temp.length < 4){
+			message.username = '(*) Your username length must be longer than 7.';
+			result = false;
+		} else {
+			if( temp.match(/\W/) != null ){
+				message.username = '(*) Your username must not contain special character.';
+				result = false;
+			}
+			else{
+				await this.fetchUsername();
+				result = this.state.result;
+				message.username = this.state.message.username;
+			}
+		}
 
-		// temp = user.password;
+		temp = user.password;
 
-		// if( temp.length < 8 ){
-		// 	message.password = '(*) Your password length must be longer than 7.';
-		// 	result = false;
-		// } else {
-		// 	if( temp !== user.confirmPassword ){
-		// 		message.password = '(*) Your password and Confirm Password must be matched.';
-		// 		message.confirmPassword = '(*) Your password and Confirm Password must be matched.';
-		// 		result = false;
-		// 	} else {
-		// 		message.password = '';
-		// 		message.confirmPassword = '';
-		// 		result = true;
-		// 	}
-		// }
+		if( temp.length < 8 ){
+			message.password = '(*) Your password length must be longer than 7.';
+			result = false;
+		} else {
+			if( temp !== user.confirmPassword ){
+				message.password = '(*) Your password and Confirm Password must be matched.';
+				message.confirmPassword = '(*) Your password and Confirm Password must be matched.';
+				result = false;
+			} else {
+				message.password = '';
+				message.confirmPassword = '';
+				result = true;
+			}
+		}
 
 
-		// var now = new Date().getFullYear();
+		var now = new Date().getFullYear();
 
-		// if ( user.birthday === null){
-		// 	message.birthday = '(*) Your birthday must not be empty.';
-		// 	result = false;
-		// } else {
-		// 	if( ( now - user.birthday.getFullYear() ) < 18){
-		// 		message.birthday = '(*) You must be 18 or older.';
-		// 		result = false;
-		// 	} else {
-		// 		message.birthday = '';
-		// 		result = true;
-		// 	}
-		// }
+		if ( user.birthday === null){
+			message.birthday = '(*) Your birthday must not be empty.';
+			result = false;
+		} else {
+			if( ( now - user.birthday.getFullYear() ) < 18){
+				message.birthday = '(*) You must be 18 or older.';
+				result = false;
+			} else {
+				message.birthday = '';
+				result = true;
+			}
+		}
 
-		// var re = /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
+		var re = /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
 		
-		// if(!user.email.match(re)) {
-		// 	message.email = '(*) Your email must be email type.';
-		// 	result = false;
-		// } else {
-		// 	this.fetchEmail();
-		// 	result = this.state.result;
-		// }
+		if(!user.email.match(re)) {
+			message.email = '(*) Your email must be email type.';
+			result = false;
+		} else {
+			await this.fetchEmail();
+			result = this.state.result;
+			message.email = this.state.message.email;
+		}
 
 		if(user.phone.length < 10 || ( user.phone.match(/\D/) != null ) ){
 			message.phone = '(*) Your phone must be phone type.';
 			result = false;
 		} else {
-			console.log('1');
-			this.fetchPhone();
+			await this.fetchPhone();
 			result = this.state.result;
-			console.log(result);
+			message.phone = this.state.message.phone;
 		}
+		console.log('1');
 
 		this.setState({
 			message: message,
@@ -255,12 +260,14 @@ class CreateForm extends React.Component{
 		return result;
 	}
 
-	test(){
-		if(this.handleValidInfo() === true){
-			console.log('true');
+	async test(){
+		var temp = await this.handleValidInfo();
+		console.log('ket qua ',temp);
+		if(temp.oldResult === true){
+			console.log('test true');
 		}
 		else{
-			console.log('false');
+			console.log('test false');
 		}
 	}
 
