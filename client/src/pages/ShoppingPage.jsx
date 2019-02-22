@@ -1,26 +1,26 @@
 import React from 'react';
+import { withRouter, Route , Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
 
 class ShoppingPage extends React.Component {
 	render(){
 		console.log('rendering shopping page');
 		return(	
 			<div>
-				<nav className='uk-padding-small'>
+				<nav className=''>
 					<div className='uk-grid-collapse' uk-grid=''>
-						<div className='uk-width-1-5'>Banner</div>
-						<div className='uk-width-3-5'>Nav</div>
-						<div className='uk-width-1-5'>
-						</div>
+						<div className='uk-width-1-5 sp-banner'>Banner</div>
+						<div className='uk-width-2-5 sp-search'>Search</div>
+						<div className='uk-width-1-5 sp-login'>Login</div>
+						<div className='uk-width-1-5 sp-cart'>Cart</div>
 					</div>
 				</nav>
-				<div className='uk-grid-collapse uk-padding-small' uk-grid=''>
-					<div className='uk-width-1-5'>
-						1
+				<div className='uk-grid-collapse sp-div-2' uk-grid=''>
+					<div className='uk-width-1-5 sp-category'>
+						category
 					</div>
-					<div className='uk-width-4-5'>
-						4
+					<div className='uk-width-4-5 sp-advertisement'>
+						advertisement
 					</div>
 				</div>
 			</div>

@@ -17,6 +17,13 @@ const initialState = {
 		phone: '',
 	},
 	result: false,
+
+	statusCalendar: true,
+
+	calendar:{
+		active: 'hiddenCalendar hiddenCalendar-active',
+		hidden: 'hiddenCalendar',
+	}
 }
 
 export default function reducer(state=initialState, action){
@@ -33,6 +40,20 @@ export default function reducer(state=initialState, action){
 				...state,
 				message: action.payload.message,
 				// result: action.payload.result,
+			}
+		}
+
+		case 'CU_CHANGE_STATUS_CALENDAR': {
+			return {
+				...state,
+				calendar: action.payload,
+			}
+		}
+
+		case 'CU_CREATE_ACCOUNT':{
+			return {
+				...state,
+				user: action.payload,
 			}
 		}
 

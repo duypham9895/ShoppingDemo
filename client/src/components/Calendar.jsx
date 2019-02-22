@@ -1,4 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { changeStatusCalendar } from '../actions/CreateAction.jsx';
 
 let dayAndYear = [ 0, 1500, 2, 1600, 1, 1700, 6, 1800, 4, 1900, 2, 2000, 1, 2100, 6, 2200, 4,
 			2300, 2, 2400, 1, 2500, 6 ];
@@ -17,6 +21,7 @@ class Calendar extends React.Component{
 		this.arr = arr;
 		this.state = {
 			calendar: calendar,
+			day: 0,
 		}
 	}
 
@@ -278,20 +283,24 @@ class Calendar extends React.Component{
 		return dayBegin;
 	}
 
+	handleSetState(col){
+		
+	}
+
 	pickedDay(col){
 		var date = new Date(this.state.year+'-'+this.state.month+'-'+col);
 		if(col.length === 0){
-			return;
+			return null;
 		}
 		this.setState({
 			day: col,
 		})
 
 		var handler = this.props.dataGetter;
+		console.log('in Calendar ',date);
 		if (handler !== undefined && typeof handler === 'function') {
 			handler(date);
 		}
-
 		return ;
 	}
 
@@ -367,4 +376,12 @@ class Calendar extends React.Component{
 	}
 }
 
-export default Calendar;
+const mapStateToProps = (store) => {
+	return{
+		user: store.CreateUser.user,
+		message: store.CreateUser.message,
+		result: store.CreateUser.result,
+		calendar: store.CreateUser.calendar,
+	}
+}
+export default withRouter(connect(mapStateToProps)(Calendar));

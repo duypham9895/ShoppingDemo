@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Calendar from '../Calendar.jsx';
-import { validInfo, changeUserInfo } from '../../actions/CreateAction.jsx';
+import { validInfo, changeUserInfo, changeStatusCalendar, createAccount } from '../../actions/CreateAction.jsx';
 
 const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September",
 				"October", "November", "December" ];
@@ -21,13 +21,32 @@ class CreateForm extends React.Component{
 				phone: '',
 			},
 			result: true,
+			calendar:{
+				active: 'hiddenCalendar hiddenCalendar-active',
+				hidden: 'hiddenCalendar',
+			},
+			ok: false
 		}
 	}
 
-	calendar(){
+	handleSetStateHidden(){
 		this.setState({
 			isHidden: !this.state.isHidden
 		})
+	}
+
+	changeStatusCalendar(){
+		var calendar = {
+			active: 'hiddenCalendar hiddenCalendar-active',
+			hidden: 'hiddenCalendar',
+		};
+
+		this.props.dispatch(changeStatusCalendar(calendar));	
+	}
+
+	async calendar(){
+		await this.changeStatusCalendar();
+		await this.handleSetStateHidden(); 
 	}
 
 	onChangeInput(event){
@@ -41,24 +60,24 @@ class CreateForm extends React.Component{
 			...this.props.user,
 			birthday: date,
 		}; 
+		// console.log('in create form ',typeof date);
+		if(date != null){
+			this.setState({
+				isHidden: !this.state.isHidden,
+			})
+		}
 		this.props.dispatch(changeUserInfo(newUser));
 	}
 
-	async handleSetStateUsername(oldMessage, oldResult){
-		await this.setState({
-			message: {...this.state.message, username: oldMessage},
-			result: {...this.state.result, oldResult},
-		})
-	}
-
-	async fetchUsername(){
+	fetchUsername(){
+		console.log('fetching username');
 		var user = {...this.props.user};
 		var result = {...this.state.result};
 
 		var message = '';
 		var rs = false;
 
-		await fetch('http://localhost:8080/user/get?field=username&value='+user.username, {
+		return fetch('http://localhost:8080/user/get?field=username&value='+user.username, {
 			method: 'GET',
 			mode: 'cors',
 			headers: {
@@ -68,42 +87,50 @@ class CreateForm extends React.Component{
 		.then(
 				(res) => {
 					if( res.headers.get('Content-Type') === null ){
-						rs = true;
-					} else {
-					}
+						return true;
+					} 
+					return false;
 				},
 				(err) => console.log(err),
 		)
-		.then(
-			(res) => {
-				if( rs === false){
-					message = '(*) Your usename has already exsited.';
-					result = false;
-					this.handleSetStateUsername(message,result);
-				} else{
-					message = '';
-					result = true;
-					this.handleSetStateUsername(message,result);
-				}
-			}
-		);
 	}
 
-	async handleSetStateEmail(oldMessage, oldResult){
-		await this.setState({
-			message: {...this.state.message, email: oldMessage},
-			result: {...this.state.result, oldResult},
-		})
-	}
-
-	async fetchEmail(){
+	fetchEmail(){
+		console.log('fetching email');
 		var user = {...this.props.user};
 		var result = {...this.state.result};
 
 		var message = '';
 		var rs = true;
 
-		await fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
+		return fetch('http://localhost:8080/user/get?field=email&value='+user.email, {
+			method: 'GET',
+			mode: 'cors',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+
+		.then(
+				(res) => {
+					if( res.headers.get('Content-Type') === null ){
+						return true;
+					} 
+					return false;
+				},
+				(err) => console.log(err),
+		);
+	}
+
+	fetchPhone(){
+		console.log('fetching phone');
+		var user = {...this.props.user};
+		var result = true;
+
+		var message = '';
+		var rs = true;
+
+		return fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
 			method: 'GET',
 			mode: 'cors',
 			headers: {
@@ -113,67 +140,12 @@ class CreateForm extends React.Component{
 		.then(
 				(res) => {
 					if( res.headers.get('Content-Type') === null ){
-						rs = false;
-					} else {
-					}
+						return true;
+					} 
+					return false;
 				},
 				(err) => console.log(err),
-		)
-		.then((res) => {
-			if( rs === true ){
-				message = '(*) Your email has already exsited.';
-				result = false;
-				this.handleSetStateEmail(message,result);
-			} else {
-				message = '';
-				result = true;
-				this.handleSetStateEmail(message,result);
-			}
-		});
-	}
-
-	async handleSetStatePhone(oldMessage, oldResult){
-		await this.setState({
-			message: {...this.state.message, phone: oldMessage},
-			result: {...this.state.result, oldResult},
-		})
-	}
-
-	async fetchPhone(){
-		var user = {...this.props.user};
-		var result = true;
-
-		var message = '';
-		var rs = true;
-
-		await fetch('http://localhost:8080/user/get?field=phone&value='+user.phone, {
-			method: 'GET',
-			mode: 'cors',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		.then((res) => {
-					if( res.headers.get('Content-Type') === null ){
-						rs = false;
-					} else {
-
-					}
-				},
-				(err) => console.log(err)
-		)
-		.then((res) => {
-			console.log('2');
-			if( rs === true ){
-				message = '(*) Your phone has already exsited.';
-				result = false;
-				this.handleSetStatePhone(message,result);
-			} else {
-				message = '';
-				result = true;
-				this.handleSetStatePhone(message,result);
-			}
-		});
+		);
 	}
 
 	async handleValidInfo(){
@@ -192,9 +164,16 @@ class CreateForm extends React.Component{
 				result = false;
 			}
 			else{
-				await this.fetchUsername();
-				result = this.state.result;
-				message.username = this.state.message.username;
+				var resultUsername = await this.fetchUsername();
+				
+
+				if(resultUsername === false){
+					message.username = '(*) Your username has already exsited.';
+					result = false;
+				} else{
+					message.username = "";
+					result = true;
+				}
 			}
 		}
 
@@ -237,20 +216,33 @@ class CreateForm extends React.Component{
 			message.email = '(*) Your email must be email type.';
 			result = false;
 		} else {
-			await this.fetchEmail();
-			result = this.state.result;
-			message.email = this.state.message.email;
+			var resultEmail = await this.fetchEmail();
+				
+
+			if(resultEmail === false){
+				message.email = '(*) Your email has already exsited.';
+				result = false;
+			} else{
+				message.email = '';
+				result = true;
+			}
 		}
 
 		if(user.phone.length < 10 || ( user.phone.match(/\D/) != null ) ){
 			message.phone = '(*) Your phone must be phone type.';
 			result = false;
 		} else {
-			await this.fetchPhone();
-			result = this.state.result;
-			message.phone = this.state.message.phone;
+			var resultPhone = await this.fetchPhone();
+				
+
+			if(resultPhone === false){
+				message.phone = '(*) Your phone has already exsited.';
+				result = false;
+			} else{
+				message.phone = '';
+				result = true;
+			}
 		}
-		console.log('1');
 
 		this.setState({
 			message: message,
@@ -260,22 +252,37 @@ class CreateForm extends React.Component{
 		return result;
 	}
 
-	async test(){
+	notice(result){
+		alert(result);
+	}
+
+	async buttonCreateAccount(){
 		var temp = await this.handleValidInfo();
-		console.log('ket qua ',temp);
-		if(temp.oldResult === true){
-			console.log('test true');
-		}
-		else{
-			console.log('test false');
+		console.log(temp);
+		if(temp === true){
+			this.setState({		
+				ok: true,
+			});
+			this.props.dispatch(createAccount(this.props.user));
+			setTimeout(() => {
+				console.log('time out');
+				this.props.history.push('/user/login');
+			}, 3000);
 		}
 	}
 
 	render(){
-		// console.log(this.handleValidInfo());
 		const message = this.state.message;
-		// console.log(message.username);
+		const activeCalendar = this.state.calendar.active;
+		const hiddenCalendar = this.state.calendar.hidden;
 		const user = this.props.user;
+		console.log(message);
+		if(this.state.ok === true){
+			return (
+				<h1>success</h1>
+			)
+		}
+
 		return(
 			<div>
 				<div className='uk-padding uk-position-center boxshadow flow-auto' style={{width: '45%'}}>
@@ -310,8 +317,8 @@ class CreateForm extends React.Component{
 						<label htmlFor='confirmPassword' >Confirm Password</label>
 					</div>
 					<p className={
-									message.birthday==='' ? 'hidden' : 'uk-text-danger'
-								}>{message.birthday}</p>
+							message.birthday === '' ? 'hidden' : 'uk-text-danger'
+						}>{message.birthday}</p>
 					{
 						user.birthday===null ? 
 						(
@@ -322,9 +329,9 @@ class CreateForm extends React.Component{
 								<br/>
 								<div className='custom-button' onClick={this.calendar.bind(this)}></div>
 								<div className={
-									this.state.isHidden===false ? 'hiddenCalendar hiddenCalendar-active' : 'hiddenCalendar'
+									this.state.isHidden===false ? activeCalendar : hiddenCalendar 
 								} >
-									<Calendar dataGetter={ this.changeDate.bind(this) }/>
+									<Calendar {...this.props} dataGetter={ this.changeDate.bind(this) }/>
 								</div>
 							</div>
 						) : 
@@ -337,9 +344,9 @@ class CreateForm extends React.Component{
 									monthNames[user.birthday.getMonth()]+' '+user.birthday.getDate()+' '+ user.birthday.getFullYear()
 								}</div>
 								<div className={
-									this.state.isHidden===false ? 'hiddenCalendar hiddenCalendar-active' : 'hiddenCalendar'
+									this.state.isHidden===false ? activeCalendar : hiddenCalendar 
 								} >
-									<Calendar dataGetter={ this.changeDate.bind(this) }/>
+									<Calendar {...this.props} dataGetter={ this.changeDate.bind(this) }/>
 								</div>
 							</div>
 						)
@@ -364,10 +371,11 @@ class CreateForm extends React.Component{
 						<label htmlFor='phone' >Phone</label>
 					</div>
 
-					<button onClick={this.test.bind(this)} className='uk-button uk-button-primary'>Submit</button>
+					<button onClick={this.buttonCreateAccount.bind(this)} className='uk-button uk-button-primary'>Submit</button>
 				</div>
 			</div>
 		)
+
 	}
 }
 
@@ -378,6 +386,7 @@ const mapStateToProps = (store) => {
 		user: store.CreateUser.user,
 		message: store.CreateUser.message,
 		result: store.CreateUser.result,
+		calendar: store.CreateUser.calendar,
 	}
 }
 

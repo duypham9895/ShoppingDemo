@@ -5,6 +5,7 @@ import { withRouter, Route , Switch } from 'react-router-dom';
 import LoginForm from '../components/authorize/LoginForm.jsx';
 import ForgotPasswordForm from '../components/authorize/ForgotPasswordForm.jsx';
 import CreateForm from '../components/authorize/CreateForm.jsx';
+import Test from '../components/authorize/Test.jsx';
 
 class AuthorizePage extends React.Component{
 	render(){
@@ -14,6 +15,7 @@ class AuthorizePage extends React.Component{
 					<Route path='/user/login' render={(props) => <LoginForm {...props} />} />
 					<Route path='/user/forgot' render={(props) => <ForgotPasswordForm {...props} />} />
 					<Route path='/user/create' render={(props) => <CreateForm {...props} />} />
+					<Route path='/user/test' render={(props) => <Test {...props} />} />
 				</Switch>
 			</div>
 		)

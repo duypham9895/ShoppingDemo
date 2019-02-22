@@ -166,3 +166,34 @@
 .flow-auto::-webkit-scrollbar{
     display: none;
 }
+
+/*Shopping page*/
+.sp-banner{
+    background-color: red;
+    height: 60px;
+}
+
+.sp-search{
+    background-color: blue;
+}
+
+.sp-login {
+    background-color: grey;
+}
+
+.sp-cart {
+    background-color: purple;
+}
+
+.sp-div-2 {
+    height: 200px;
+}
+
+.sp-category {
+    background-color: #1e87f0;
+    height: 200px;
+}
+
+.sp-advertisement {
+    background-color: black
+}
