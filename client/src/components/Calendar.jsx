@@ -52,7 +52,14 @@ class Calendar extends React.Component{
 	}
 
 	changeCalendar(month, year){
+
+		var count = 0;
 		var i,j;
+		for(i = 0; i < 6; i++){
+			for (j = 0; j < 7; j++){
+				this.state.calendar[i][j] = null;
+			}
+		}
 		var firstDay = this.firstDayOfYear(parseInt(month), parseInt(year));
 		var lastDay = 0;
 		// console.log('next year: '+(parseInt(year) + 1));
@@ -65,16 +72,18 @@ class Calendar extends React.Component{
 		
 
 		this.day[2] = this.dayOfFeb(year);
+		console.log('day of month 2: ',this.day[2]);
 
 		var dayOfMonth = day[month];
 		var newCalendar = [...this.state.calendar];
 
-		var count = 1;
+		count = 1;
 
 		
 		for(i = 0; i< firstDay; i++){
 			newCalendar[0][i] = '';
 		}
+
 
 		for(i = firstDay; i < 7; i++){
 			newCalendar[0][i] = count++;
@@ -90,25 +99,34 @@ class Calendar extends React.Component{
 					newCalendar[i][j] = count++;
 				}
 			}
-			// console.log('next month ' + (parseInt(month) + 1));
 
-			if(lastDay === 0){
+			while(lastDay === 0){
 				lastDay += 7;
 			}
 
-			for(j = 0; j < lastDay; j++){
-				newCalendar[4][j] = count++;
+			if(count <= dayOfMonth){
+				for(j = 0; j < lastDay; j++){
+					newCalendar[4][j] = count++;
+				}
+
+				for(j = lastDay; j < 7; j++){
+					newCalendar[4][j] = '';
+				}
+
+				return newCalendar;
 			}
 
-			for(j = lastDay; j < 7; j++){
-				newCalendar[4][j] = '';
-			}
+			
 
 			return newCalendar;
 		}else{
+			console.log('else');
 			for(i = 1; i < 5; i++){
 				for (j = 0; j < 7; j++){
-					newCalendar[i][j] = count++;
+					console.log('row ',i,' ', count);
+					if(count <= dayOfMonth){
+						newCalendar[i][j] = count++;
+					}
 				}
 			}
 
@@ -116,13 +134,20 @@ class Calendar extends React.Component{
 				lastDay += 6;
 			}
 
-			for(j = 0; j < lastDay; j++){
-				newCalendar[5][j] = count++;
+			if(count <= dayOfMonth){
+				for(j = 0; j < lastDay; j++){
+					console.log('row second',i,' ', count);
+					newCalendar[5][j] = count++;
+				}
+
+				for(j = lastDay; j < 7; j++){
+					newCalendar[5][j] = '';
+				}
+
+				return newCalendar;
 			}
 
-			for(j = lastDay; j < 7; j++){
-				newCalendar[5][j] = '';
-			}
+			
 
 			return newCalendar;
 		}
@@ -145,7 +170,6 @@ class Calendar extends React.Component{
 
 
 	doomsdayOfYear(year) {
-		// var year = this.state.year;
 		var lastTwoDigits = year % 100;
 		var temp1, temp2, temp3, temp4;
 		var firstTwoDigits = parseInt(year / 100);
