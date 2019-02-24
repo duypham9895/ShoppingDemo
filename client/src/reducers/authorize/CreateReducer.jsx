@@ -3,7 +3,7 @@ const initialState = {
 		username: '',
 		password: '',
 		confirmPassword: '',
-		birthday: null,
+		birthday: new Date(),
 		email: '',
 		phone: '',
 	},

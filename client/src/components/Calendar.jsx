@@ -72,7 +72,6 @@ class Calendar extends React.Component{
 		
 
 		this.day[2] = this.dayOfFeb(year);
-		console.log('day of month 2: ',this.day[2]);
 
 		var dayOfMonth = day[month];
 		var newCalendar = [...this.state.calendar];
@@ -120,10 +119,8 @@ class Calendar extends React.Component{
 
 			return newCalendar;
 		}else{
-			console.log('else');
 			for(i = 1; i < 5; i++){
 				for (j = 0; j < 7; j++){
-					console.log('row ',i,' ', count);
 					if(count <= dayOfMonth){
 						newCalendar[i][j] = count++;
 					}
@@ -136,7 +133,6 @@ class Calendar extends React.Component{
 
 			if(count <= dayOfMonth){
 				for(j = 0; j < lastDay; j++){
-					console.log('row second',i,' ', count);
 					newCalendar[5][j] = count++;
 				}
 
