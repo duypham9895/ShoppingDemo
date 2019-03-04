@@ -8,6 +8,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.shopping.util.Role;
+
 public class UserModel {
 	@NotEmpty
 	@Size(min = 8, max = 30, message = "Your username invalid")
@@ -16,9 +18,9 @@ public class UserModel {
 	@NotEmpty
 	@Size(min = 8, max = 36, message = "Your password invalid")
 	private String password;
-	
+
 	private String fullname;
-	
+
 	@NotNull
 	private Date birthday;
 
@@ -31,6 +33,9 @@ public class UserModel {
 	private String email;
 
 	private String notes;
+
+	@NotEmpty
+	private Role role;
 
 	private int point;
 
@@ -98,4 +103,11 @@ public class UserModel {
 		this.point = point;
 	}
 
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 }

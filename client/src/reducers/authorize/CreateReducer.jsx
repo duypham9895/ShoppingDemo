@@ -7,7 +7,6 @@ const initialState = {
 		email: '',
 		phone: '',
 	},
-	model: {},
 	message: {
 		username: '',
 		password: '',
@@ -16,10 +15,6 @@ const initialState = {
 		email: '',
 		phone: '',
 	},
-	result: false,
-
-	statusCalendar: true,
-
 	calendar:{
 		active: 'hiddenCalendar hiddenCalendar-active',
 		hidden: 'hiddenCalendar',
@@ -53,7 +48,14 @@ export default function reducer(state=initialState, action){
 		case 'CU_CREATE_ACCOUNT':{
 			return {
 				...state,
-				user: action.payload,
+				user: {
+					username: '',
+					password: '',
+					confirmPassword: '',
+					birthday: new Date(),
+					email: '',
+					phone: '',
+				} ,
 			}
 		}
 

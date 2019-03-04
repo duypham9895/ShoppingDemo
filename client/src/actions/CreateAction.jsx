@@ -46,7 +46,6 @@ export function createAccount(user){
 			if(res.ok){
 				res.json().then((result) => {
 					if(result.status === 'SUCCESS'){
-						
 						dispatch({
 							type: 'CU_CREATE_ACCOUNT',
 							payload: result.object,

@@ -7,6 +7,7 @@ import com.shopping.DAO.UserDAO;
 import com.shopping.entity.User;
 import com.shopping.model.UserModel;
 import com.shopping.util.Message;
+import com.shopping.util.Role;
 import com.shopping.util.ServiceResult;
 import com.shopping.util.ServiceStatus;
 
@@ -55,8 +56,6 @@ public class UserService {
 	}
 
 	public User getUser(String field, String value) {
-		System.out.println("serive get"+" "+field+" "+value);
-//		System.out.println("asdasd "+userDAO.find(field, value).getUsername());
 		return userDAO.find(field, value);
 	}
 
@@ -71,6 +70,7 @@ public class UserService {
 		user.setBirthday(model.getBirthday());
 		user.setNotes(model.getNotes());
 		user.setPoint(model.getPoint());
+		user.setRole(model.getRole());
 
 		return user;
 	}
@@ -97,6 +97,7 @@ public class UserService {
 
 	}
 
+	@SuppressWarnings("null")
 	public ServiceResult createUser(UserModel model) {
 		ServiceResult result = new ServiceResult();
 		User user = userDAO.find(model.getUsername());
@@ -107,18 +108,22 @@ public class UserService {
 			model.setFullname(model.getUsername());
 			model.setNotes("");
 			model.setPoint(0);
-
-			userDAO.insert(extract(model));
+			model.setRole(Role.Admin);
+			user = userDAO.insert(extract(model));
 
 			result.setMessage(Message.DATA_SUCCESS);
 			result.setStatus(ServiceStatus.SUCCESS);
 			result.setObject(user);
+			System.out.println("success");
+			System.out.println(user.getUsername());
 			return result;
 		}
-
+		
+		
 		result.setMessage(Message.DATA_EXIST);
 		result.setStatus(ServiceStatus.FAIL);
 		result.setObject(null);
+		System.out.println("fail");
 		return result;
 
 	}

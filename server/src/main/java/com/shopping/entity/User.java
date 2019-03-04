@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.shopping.util.Role;
+
 @Document("users")
 public class User {
 	@Id
@@ -16,6 +18,7 @@ public class User {
 	private String email;
 	private String notes;
 	private int point;
+	private Role role;
 
 	public String getUsername() {
 		return username;
@@ -47,6 +50,14 @@ public class User {
 
 	public int getPoint() {
 		return point;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public void setUsername(String username) {

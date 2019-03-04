@@ -317,7 +317,6 @@ class Calendar extends React.Component{
 		})
 
 		var handler = this.props.dataGetter;
-		console.log('in Calendar ',date);
 		if (handler !== undefined && typeof handler === 'function') {
 			handler(date);
 		}
@@ -391,6 +390,8 @@ class Calendar extends React.Component{
 						}
 					</tbody>
 				</table>
+
+
 			</div>
 		)
 	}

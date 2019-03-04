@@ -26,21 +26,18 @@ public class UserController {
 	
 	@PutMapping("/update")
 	public ServiceResult updateUser(@RequestBody UserModel model) {
-		System.out.println(model.getPassword());
 		return userService.updateUser(model);
 		
 	}
 	
 	@GetMapping("/{username}")
 	public ServiceResult getUser(@PathVariable(name="username") String username) {
-		System.out.println("success");
 		return userService.getUser(username);
 	}
 	
 	@GetMapping("/get")
 	public User getUser(@RequestParam(name="field", defaultValue="") String field,
 			@RequestParam(name="value", defaultValue="") String value) {
-		System.out.println("get ");
 		return userService.getUser(field, value);
 	}
 	

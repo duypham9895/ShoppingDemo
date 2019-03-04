@@ -6,7 +6,6 @@ const initialState = {
 			newPassword: '',
 			confirmPassword: '',
 		},
-		model:{},
 		confirmCode: '',
 	},
 	code: '',

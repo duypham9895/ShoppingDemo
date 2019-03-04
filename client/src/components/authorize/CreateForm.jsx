@@ -69,7 +69,6 @@ class CreateForm extends React.Component{
 	}
 
 	fetchUsername(){
-		console.log('fetching username');
 		var user = {...this.props.user};
 		var result = {...this.state.result};
 
@@ -95,7 +94,6 @@ class CreateForm extends React.Component{
 	}
 
 	fetchEmail(){
-		console.log('fetching email');
 		var user = {...this.props.user};
 		var result = {...this.state.result};
 
@@ -122,7 +120,6 @@ class CreateForm extends React.Component{
 	}
 
 	fetchPhone(){
-		console.log('fetching phone');
 		var user = {...this.props.user};
 		var result = true;
 
@@ -176,9 +173,6 @@ class CreateForm extends React.Component{
 			}
 		}
 
-		console.log('result username ',result);
-		console.log('message username ',message.username );
-
 		temp = user.password;
 
 		if( temp.length < 8 ){
@@ -196,31 +190,15 @@ class CreateForm extends React.Component{
 			}
 		}
 
-		console.log('result password ',result);
-		console.log('message password ',message.password );
-		console.log('message confirmPassword ',message.confirmPassword );
-
 
 		var now = new Date().getFullYear();
-
-		// if ( user.birthday === null){
-		// 	message.birthday = '(*) Your birthday must not be empty.';
-		// 	result = false;
-		// } else {
-			console.log('year of user ',now - user.birthday.getFullYear());
-			if( ( now - user.birthday.getFullYear() ) < 18){
-				console.log('not enough 18')
-				message.birthday = '(*) You must be 18 or older.';
-				result = false;
-			} else {
-				console.log('enough 18');
-				message.birthday = '';
-				result = true;
-			}
-		// }
-
-		console.log('result birthday ',result);
-		console.log('message birthday ',message.birthday );
+		if( ( now - user.birthday.getFullYear() ) < 18){
+			message.birthday = '(*) You must be 18 or older.';
+			result = false;
+		} else {
+			message.birthday = '';
+			result = true;
+		}
 
 		var re = /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
 		
@@ -240,9 +218,6 @@ class CreateForm extends React.Component{
 			}
 		}
 
-		console.log('result email ',result);
-		console.log('message email ',message.email );
-
 		if(user.phone.length < 10 || ( user.phone.match(/\D/) != null ) ){
 			message.phone = '(*) Your phone must be phone type.';
 			result = false;
@@ -259,15 +234,6 @@ class CreateForm extends React.Component{
 			}
 		}
 
-		console.log('result phone ',result);
-		console.log('message phone ',message.phone );
-
-		this.setState({
-			message: message,
-			result: result,
-		})
-
-		
 		for( var data in message){
 			if(message[data] !== ''){
 				result = false;
@@ -275,14 +241,18 @@ class CreateForm extends React.Component{
 			}
 			
 		}
+
+		this.setState({
+			message: message,
+			result: result,
+		})
+
 		return result;
 	}
 
 	async buttonCreateAccount(){
 		var temp = await this.handleValidInfo();
 		var message = {...this.state.message};
-		console.log(temp);
-		console.log('birthday ',this.props.user.birthday);
 		
 		if(temp === true ){
 			this.setState({		
@@ -290,11 +260,11 @@ class CreateForm extends React.Component{
 			});
 			this.props.dispatch(createAccount(this.props.user));
 			setTimeout(() => {
-				console.log('time out');
 				this.props.history.push('/user/login');
 			}, 3000);
 		}
 	}
+
 
 	render(){
 		const message = this.state.message;
@@ -302,7 +272,6 @@ class CreateForm extends React.Component{
 		const hiddenCalendar = this.state.calendar.hidden;
 		const user = this.props.user;
 		const now = new Date();
-		console.log(message);
 		if(this.state.ok === true){
 			return (
 				<h1>success</h1>
@@ -363,7 +332,6 @@ class CreateForm extends React.Component{
 						) : 
 						(
 							<div className='uk-margin-small uk-position-relative '>
-								
 								<label className='custom-button-label custom-button-label-active'>Birthday</label>
 								<br/>
 								<div className='custom-button custom-button-active' onClick={this.calendar.bind(this)}>{
