@@ -1,5 +1,7 @@
 package com.shopping.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +73,7 @@ public class UserService {
 		user.setNotes(model.getNotes());
 		user.setPoint(model.getPoint());
 		user.setRole(model.getRole());
+		user.setImages(model.getImages());
 
 		return user;
 	}
@@ -100,15 +103,20 @@ public class UserService {
 	@SuppressWarnings("null")
 	public ServiceResult createUser(UserModel model) {
 		ServiceResult result = new ServiceResult();
+		ArrayList<String> images = new ArrayList<>();
+		
 		User user = userDAO.find(model.getUsername());
+		
 		User userByEmail = userDAO.find("email",model.getEmail());
 		User userByPhone = userDAO.find("phone",model.getPhone());
 
 		if (user == null && userByEmail == null & userByPhone == null) {
+			images.add("default_avatar.jpg");
 			model.setFullname(model.getUsername());
 			model.setNotes("");
 			model.setPoint(0);
 			model.setRole(Role.Admin);
+			model.setImages(images);
 			user = userDAO.insert(extract(model));
 
 			result.setMessage(Message.DATA_SUCCESS);

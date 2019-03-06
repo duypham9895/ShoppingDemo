@@ -237,7 +237,8 @@ class CreateForm extends React.Component{
 		for( var data in message){
 			if(message[data] !== ''){
 				result = false;
-				return result;
+			} else {
+				result = true;
 			}
 			
 		}
@@ -251,6 +252,7 @@ class CreateForm extends React.Component{
 	}
 
 	async buttonCreateAccount(){
+		console.log('create account');
 		var temp = await this.handleValidInfo();
 		var message = {...this.state.message};
 		

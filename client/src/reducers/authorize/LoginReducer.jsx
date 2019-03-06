@@ -1,5 +1,11 @@
 const initialState = {
-	user: null,
+	user: {
+		username: 'admin',
+		role: 'Admin',
+		images: [
+			'default_avatar.jpg'
+		]
+	},
 	form:{
 		data:{
 			username: '',
@@ -8,7 +14,7 @@ const initialState = {
 		forgot:{
 			email: '',
 			phone: '',
-		}
+		},
 	}
 };
 

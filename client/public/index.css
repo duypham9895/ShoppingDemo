@@ -167,33 +167,67 @@
     display: none;
 }
 
-/*Shopping page*/
-.sp-banner{
-    background-color: red;
-    height: 60px;
+
+.MP-category{
+    background-color: #2f3c42;
+    color: white;
+    height: calc(100vh);
 }
 
-.sp-search{
-    background-color: blue;
+.MP-image-user{
+    border-radius: 50%;
+    width: 40%;
+    margin: 10%;
 }
 
-.sp-login {
-    background-color: grey;
+.dropdown {
+    width: 100%;
+    max-height: 0;
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: all .3s ease-in-out;
 }
 
-.sp-cart {
-    background-color: purple;
+.dropdown-active {
+    max-height: 1000px;
+    overflow: auto;
+
 }
 
-.sp-div-2 {
-    height: 200px;
+.dropdown > ul > li {
+    margin-left: 20px;
 }
 
-.sp-category {
-    background-color: #1e87f0;
-    height: 200px;
+.icon{
+    width: 50px;
+    height: 50px;
+    background-color: #2f3c42;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
 }
 
-.sp-advertisement {
-    background-color: black
+.icon > i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: -moz-max-content;
+    width: max-content;
+    max-width: 100%;
+    box-sizing: border-box;
+    color: white;
+}
+
+.fixed-bottom-right{
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+}
+
+.overflow-auto{
+    overflow: auto;
+    max-height: calc(100vh);
+    box-sizing: border-box;
 }

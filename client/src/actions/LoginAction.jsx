@@ -23,6 +23,7 @@ export function requestDataLogin(data, history) {
 				if(res.ok){
 					res.json().then(result => {
 						if(result.status === 'SUCCESS') {
+							console.log(history);
 							history.goBack();
 							dispatch({
 								type: 'LOGIN_SUCCESS',

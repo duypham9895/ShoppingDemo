@@ -1,6 +1,7 @@
 package com.shopping.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
@@ -38,6 +39,9 @@ public class UserModel {
 	private Role role;
 
 	private int point;
+
+	@NotEmpty
+	private List<String> images;
 
 	public String getUsername() {
 		return username;
@@ -110,4 +114,13 @@ public class UserModel {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+
+	public List<String> getImages() {
+		return images;
+	}
+
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
+
 }

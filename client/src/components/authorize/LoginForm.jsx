@@ -22,12 +22,23 @@ class LoginForm extends React.Component {
 	}
 
 	create(){
+
 		this.props.history.push('/user/create');
 	}
 
+	enter(event){
+
+		if(event.keyCode === 13){
+			this.login();
+		}
+	}
+
+
+
 	render(){
 		return(
-			<div className='uk-padding uk-position-center boxshadow' style={{width: '50%'}}>
+			<div className='uk-padding uk-position-center boxshadow' style={{width: '50%'}}
+			onKeyDown={this.enter.bind(this)}>
 				<h2 className='uk-text-center uk-text-bold uk-text-primary'>Sign In</h2>
 				<nav className='uk-padding-small'></nav>
 				<div >

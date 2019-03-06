@@ -1,6 +1,7 @@
 package com.shopping.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,6 +20,7 @@ public class User {
 	private String notes;
 	private int point;
 	private Role role;
+	private List<String> images;
 
 	public String getUsername() {
 		return username;
@@ -90,6 +92,14 @@ public class User {
 
 	public void setPoint(int point) {
 		this.point = point;
+	}
+
+	public List<String> getImages() {
+		return images;
+	}
+
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 
 }

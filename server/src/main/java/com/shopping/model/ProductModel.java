@@ -4,21 +4,38 @@ import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
+import com.shopping.entity.Category;
+
 public class ProductModel {
 
 	@NotEmpty
 	private String id;
-	
+
 	@NotEmpty
 	private String name;
-	
+
 	private String description;
-	
+
 	@NotEmpty
 	private List<String> image;
-	
+
 	@NotEmpty
 	private float price;
+
+	@NotEmpty
+	private int qty;
+
+	@NotEmpty
+	private Category category;
+
+	@NotEmpty
+	private String origin;
+
+	@NotEmpty
+	private String unit;
+	private String color;
+	private String size;
+	private String weight;
 
 	public String getId() {
 		return id;
@@ -58,6 +75,62 @@ public class ProductModel {
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public int getQty() {
+		return qty;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public String getWeight() {
+		return weight;
+	}
+
+	public void setQty(int qty) {
+		this.qty = qty;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
 	}
 
 }
